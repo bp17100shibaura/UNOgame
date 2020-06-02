@@ -1,9 +1,30 @@
 package GameSet;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
 
 public class GamePlayer {
 
 	public static void main(String[] args) {
-		// TODO 自動生成されたメソッド・スタブ
+		
+		try {
+			    Socket sock = new Socket("localhost",10000);
+			    
+			    OutputStream out = sock.getOutputStream();
+			    
+			    String Data = "test";
+			    
+			    out.write(Data.getBytes("UTF-8"));
+			    
+			    System.out.println(Data + "を送信");
+			    
+			    out.close();
+			    
+			    sock.close();
+			    
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
