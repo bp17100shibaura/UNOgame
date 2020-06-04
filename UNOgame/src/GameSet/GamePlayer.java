@@ -1,31 +1,64 @@
 package GameSet;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class GamePlayer {
+public class GamePlayer 
+{
 
-	public static void main(String[] args) {
+	private Socket sock;
+	
+	public int playerSet(int port)
+	{
 		
-		try {
-			    Socket sock = new Socket("localhost",10000);
+		try 
+		{
+	        sock = new Socket("localhost",port);
 			    
-			    OutputStream out = sock.getOutputStream();
-			    
-			    String Data = "test";
-			    
-			    out.write(Data.getBytes("UTF-8"));
-			    
-			    System.out.println(Data + "ÇëóêM");
-			    
-			    out.close();
-			    
-			    sock.close();
-			    
-		}catch(IOException e) {
+		}catch(IOException e) 
+		{
 			e.printStackTrace();
+			return 0;
 		}
-
+		return 1;
 	}
 
+	public void gameEnd()
+	{
+		try
+		{
+		    sock.close();
+		}catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public BufferedReader getReader()
+	{
+		BufferedReader reader = null;
+		try
+		{
+		    reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+		}catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		return reader;
+	}
+	
+	public PrintWriter getWriter()
+	{
+		PrintWriter writer = null;
+		try
+		{
+			writer = new PrintWriter(sock.getOutputStream(),true);
+		}catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		return writer;
+	}
 }
