@@ -10,6 +10,8 @@ public class UNOserver
 
 	public static void main(String[] args)
 	{
+		System.out.println("dddd");
+		
 		int a = Integer.parseInt(args[0]);
 		int b = Integer.parseInt(args[1]);
 		
