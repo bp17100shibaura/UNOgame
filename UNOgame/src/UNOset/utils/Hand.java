@@ -2,7 +2,73 @@ package UNOset.utils;
 
 import java.util.ArrayList;
 
-public class Hand {
-	ArrayList<Card> hands = new ArrayList<Card>();
-
+public class Hand 
+{
+	private ArrayList<Card> hands = new ArrayList<Card>();
+	
+	void getCard(Card card)
+	{
+		hands.add(card);
+	}
+	
+	int getNum()
+	{
+		return hands.size();
+	}
+	
+	Card disCard(String name)
+	{
+		int index = serchCard(name);
+		if(index == -1)
+		{
+			return null;
+		}
+		
+		Card temp = hands.remove(index);
+		return temp;
+	}
+	
+	int serchCard(String name)
+	{
+		for(int i = 0;i < hands.size() ;i++)
+		{
+			if(name == (hands.get(i)).getCardName())
+			{
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	String colors()
+	{
+		int r = 0;
+		int g = 0;
+		int y = 0;
+		int b = 0;
+		int w = 0;
+		for(int i = 0;i < hands.size();i++)
+		{
+			String temp = (hands.get(i)).getCardColor();
+			if(temp == "r")
+			{
+				r++;
+			}
+			else if(temp == "g")
+			{
+				g++;
+			}else if(temp == "b")
+			{
+				b++;
+			}else if(temp == "y")
+			{
+				y++;
+			}else
+			{
+				w++;
+			}
+		}
+		return "R"+ r +"/G" +g +"/B" +b +"/Y"+ y + "/W" + w ;
+	}
 }
