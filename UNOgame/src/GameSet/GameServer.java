@@ -22,9 +22,7 @@ public class GameServer
 		    //svSock[2] = new ServerSocket(10003);
 		    //svSock[3] = new ServerSocket(10004);
 		    sock[0] = svSock[0].accept();
-		    System.out.println("aOK");
 		    sock[1] = svSock[1].accept();
-		    System.out.println("bOK");
 		    //sock[2] = svSock[2].accept();
 		    //sock[3] = svSock[3].accept();
 		}catch(IOException e)

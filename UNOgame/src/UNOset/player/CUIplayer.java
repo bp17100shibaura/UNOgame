@@ -24,8 +24,16 @@ public class CUIplayer
 		{
 			BufferedReader read = player.getReader();
 			PrintWriter write = player.getWriter();
+			
 			temp = read.readLine();
 			System.out.println(temp);
+			temp = read.readLine();
+			System.out.println(temp);
+			for(int i = 0;i < 7;i++)
+			{
+				temp = read.readLine();
+				System.out.println(temp);
+			}
 			write.println("turn finish");
 			temp= read.readLine();
 			System.out.println(temp);
