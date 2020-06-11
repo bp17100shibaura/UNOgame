@@ -20,6 +20,8 @@ public class CUIplayer
 	    
 	    String temp = "";
 		
+	    System.out.println("testtes");
+	    
 		try
 		{
 			BufferedReader read = player.getReader();
