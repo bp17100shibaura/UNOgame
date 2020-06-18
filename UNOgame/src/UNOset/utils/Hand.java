@@ -6,17 +6,17 @@ public class Hand
 {
 	private ArrayList<Card> hands = new ArrayList<Card>();
 	
-	void getCard(Card card)
+	public void getCard(Card card)
 	{
 		hands.add(card);
 	}
 	
-	int getNum()
+	public int getNum()
 	{
 		return hands.size();
 	}
 	
-	Card disCard(String name)
+	public Card disCard(String name)
 	{
 		int index = serchCard(name);
 		if(index == -1)
@@ -28,7 +28,7 @@ public class Hand
 		return temp;
 	}
 	
-	int serchCard(String name)
+	public int serchCard(String name)
 	{
 		for(int i = 0;i < hands.size() ;i++)
 		{
@@ -41,7 +41,7 @@ public class Hand
 		return -1;
 	}
 	
-	String colors()
+	public String colors()
 	{
 		int r = 0;
 		int g = 0;
