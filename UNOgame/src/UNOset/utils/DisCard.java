@@ -6,24 +6,24 @@ public class DisCard
 {
    private ArrayList<Card> cards = new ArrayList<Card>(); 
    
-   void discard(Card card)
+   public void discard(Card card)
    {
 	   cards.add(card);
    }
    
-   ArrayList<Card> openDiscard()
+   public ArrayList<Card> openDiscard()
    {
 	   ArrayList<Card> openCard = new ArrayList<>(cards);
 	   return openCard;
    }
    
-   String getTopName()
+   public String getTopName()
    {
 	   Card top = cards.get(cards.size()-1);
 	   return top.getCardName();
    }
    
-   int getNum()
+   public int getNum()
    {
 	   return cards.size();   
    }

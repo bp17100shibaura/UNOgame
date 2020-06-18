@@ -17,28 +17,22 @@ public class CUIplayer
 	    	System.out.println("Ú‘±ƒGƒ‰[");
 	    	return;
 	    }
-	    
-	    String temp = "";
 		
-	    System.out.println("testtes");
-	    
+	    BufferedReader read = player.getReader();
+		PrintWriter write = player.getWriter();
+		
 		try
 		{
-			BufferedReader read = player.getReader();
-			PrintWriter write = player.getWriter();
+			/*4‡‚Ì€”õ*/
 			
-			temp = read.readLine();
-			System.out.println(temp);
-			temp = read.readLine();
-			System.out.println(temp);
-			for(int i = 0;i < 7;i++)
-			{
-				temp = read.readLine();
-				System.out.println(temp);
-			}
-			write.println("turn finish");
-			temp= read.readLine();
-			System.out.println(temp);
+			   /*‡‚Ì€”õ*/
+			
+			
+			   /*‡*/
+			
+			   /*‡Œ‹‰Êˆ—*/
+			
+			/*4‡‚Ìˆ—*/
 			
 			read.close();
 			write.close();
@@ -46,6 +40,7 @@ public class CUIplayer
 		{
 			e.printStackTrace();
 		}
+		
 		player.gameEnd();
 		System.out.println("pEND");
 	}
