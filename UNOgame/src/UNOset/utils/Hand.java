@@ -41,6 +41,29 @@ public class Hand
 		return -1;
 	}
 	
+	public int result()
+	{
+		int result = 0;
+		Card card;
+		for(int i = 0;i < hands.size();i++)
+		{
+			card = hands.get(i);
+			if(card instanceof NumberCard)
+			{
+				result += ((NumberCard) card).getCardNumber();
+			}
+			else if(card.getCardType() == 2)
+			{
+				result += 20;
+			}
+			else if(card.getCardType() == 3)
+			{
+				result += 50;
+			}
+		}
+		return result;
+	}
+	
 	public String colors()
 	{
 		int r = 0;

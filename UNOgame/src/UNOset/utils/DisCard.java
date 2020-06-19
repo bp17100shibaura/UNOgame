@@ -23,6 +23,24 @@ public class DisCard
 	   return top.getCardName();
    }
    
+   public boolean isDiscard(Card card)
+   {
+	   Card top = cards.get(cards.size() -1);
+	   if(top.getCardColor() == card.getCardColor())
+	   {
+		   return true;
+	   }
+	   else if(top.getCardName() == card.getCardName())
+	   {
+		   return true;
+	   }
+	   else if(card.getCardColor() == "w")
+	   {
+		   return true;
+	   }
+	   return false;
+   }
+   
    public int getNum()
    {
 	   return cards.size();   

@@ -26,10 +26,10 @@ public class GameRun
 	{
 		//試合結果の準備
 		RoundData result = new RoundData();
-		result.score = new int[playerNum];
 		
 		deck.deckMake();
 		deck.shuffle();
+		CardList list = new CardList();
 		
 		server.sendAllMessage("Game Start!");
 		
@@ -67,28 +67,122 @@ public class GameRun
 			server.sendAllMessage("player"+ turn + "'s turn!");
 			
 			/*ここにターンの処理*/
-			server.sendMessage(turn, "yourturn");
-			server.catchMessage(turn);
+			String str = "";
+			Card card;
+			do 
+			{
+				server.sendMessage(turn, "yourturn");
+				server.sendMessage(turn, "Top Card");
+				server.sendMessage(turn, disCard.getTopName());
+				str = server.catchMessage(turn);
+			}while (str == "ok");
+			
+			server.sendMessage(turn,"card or command");
+			str = server.catchMessage(turn);
+			while(true)
+			{
+				if(str == "command")
+				{
+					command(turn);
+				}
+				else if(str != "card")
+				{
+					server.sendMessage(turn, "error");
+				}
+				else
+				{
+					break;
+				}
+			}
+			
+		    str = server.catchMessage(turn);
+			while(true)
+			{
+				if(-1 == hand[turn-1].serchCard(str))
+				{
+					server.sendMessage(turn, "have'nt");
+				}
+				else if(!disCard.isDiscard(list.makeCard(str)))
+				{
+					server.sendMessage(turn, "can't discard");
+				}
+				else
+				{
+					break;
+				}
+			}
+			card = hand[turn-1].disCard(str);
+			disCard.discard(card);
+			server.sendMessage(turn, "OK");
+			
+			server.sendAllMessage("player"+ turn + " discard");
+			server.sendAllMessage(card.getCardName());
+			
+			/*ここにカードの効果処理*/
+			
 			
 			/*ここに勝利条件の処理*/
-			
-			
-			
-			/*ここはターン経過の処理*/
-			turn += turnbase;
-			if(turn == playerNum+1)
-			{
-				turn = 0;
-			}
-			else if(turn == 0)
-			{
-				turn = playerNum;
-			}
-			if(drawcount > 20)
+			if(hand[turn-1].getNum() == 0)
 			{
 				break;
 			}
+			
+			/*ターン移行の処理*/
+			turncount(turn,turnbase);
 		}
+		calculate(result);
+		
+		return result;
+	}
+	
+	private int turncount(int turn, int turnbase)
+	{
+		turn += turnbase;
+		if(turn == 0)
+		{
+			turn = playerNum;
+		}
+		else if(turnbase == 1)
+		{
+			if(turn > playerNum)
+			{
+				turn = turn - playerNum;
+			}
+		}
+		else if(turnbase == -1)
+		{
+			if(turn < 0)
+			{
+				turn = playerNum + turn;
+			}
+		}
+		
+		return turn;
+	}
+	
+	private void command(int turn)
+	{
+		System.out.println(turn);
+	}
+	
+	private RoundData calculate(RoundData result)
+	{
+		int[] score = new int[playerNum];
+		int temp = 0;
+		
+		for(int i = 0;i < playerNum;i++)
+		{
+			score[i] = - hand[i].result();
+			temp += hand[i].result();
+		}
+		for(int i = 0;i < playerNum;i++)
+		{
+			if(score[i] == 0)
+			{
+				score[i] = temp;
+			}
+		}
+		result.score = score;
 		
 		return result;
 	}
