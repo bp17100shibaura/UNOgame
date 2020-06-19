@@ -32,6 +32,7 @@ public class SpecialCard implements Card
 		return color;
 	}
 	
+	
 	public String getEffect()
 	{
 		return effect;

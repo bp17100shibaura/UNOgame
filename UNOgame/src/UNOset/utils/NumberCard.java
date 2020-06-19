@@ -32,7 +32,7 @@ public class NumberCard implements Card
 		return color;
 	}
 	
-	public int getNumber()
+	public int getCardNumber()
 	{
 		return num;
 	}

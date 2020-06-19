@@ -2,7 +2,7 @@ package UNOset.utils;
 
 public class CardList 
 {
-	Card makeCard(String name)
+	public Card makeCard(String name)
 	{
 	    	int temp = name.indexOf('.');
 	    	String type = name.substring(0, temp);

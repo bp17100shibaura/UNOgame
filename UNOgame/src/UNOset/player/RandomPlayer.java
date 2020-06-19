@@ -5,9 +5,9 @@ import java.io.PrintWriter;
 import GameSet.GamePlayer;
 import UNOset.utils.*;
 
-public class CUIplayer
-{
-		
+
+public class RandomPlayer {
+
 	public static void main(String[] args)
 	{
 		int num = Integer.parseInt(args[0]);
@@ -44,5 +44,7 @@ public class CUIplayer
 		
 		player.gameEnd();
 		System.out.println("pEND");
+
 	}
+
 }
