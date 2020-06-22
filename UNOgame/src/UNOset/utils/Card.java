@@ -7,4 +7,6 @@ public interface Card {
 	int getCardType(); //1:number 2:special 3:wild
 	
 	String getCardColor();
+	
+	boolean isDrawcard();
 }

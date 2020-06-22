@@ -8,8 +8,11 @@ public class UNOserver
 		int playerNum = 2;
 		
 		//ポートの設定
-		int a = Integer.parseInt(args[0]);
-		int b = Integer.parseInt(args[1]);
+		//int a = Integer.parseInt(args[0]);
+		//int b = Integer.parseInt(args[1]);
+		
+		int a = 556;
+		int b = 777;
 		
 		//TCPserverとの接続
 	    TCPserver server = new TCPserver(2);
@@ -29,6 +32,12 @@ public class UNOserver
 	    int roundCount = 0;
 	    
 	    int[][] scoreData = new int[playerNum][roundNum];
+	    
+	    for(int i = 0;i < playerNum;i++)
+	    {
+	    	server.sendMessage(i+1,"player");
+	    	server.sendMessage(i+1, Integer.toString(i+1));
+	    }
 	    
 	    //マッチの管理
 		while(true)
@@ -75,6 +84,8 @@ public class UNOserver
 		}
 		server.sendAllMessage("winner player"+ topP);
 		server.sendAllMessage("winner score "+ topS);
+		
+		server.sendAllMessage("GAME END");
 		
 		server.close();
 		server.gameEnd();
