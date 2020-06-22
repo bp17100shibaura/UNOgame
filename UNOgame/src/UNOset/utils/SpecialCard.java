@@ -11,7 +11,7 @@ public class SpecialCard implements Card
 	{
 		this.color = color;
 		this.effect = effect;
-		this.name = "Sp." + color + "." + effect; 
+		this.name = "Spe." + color + "." + effect; 
 	}
 
 	@Override
@@ -32,6 +32,18 @@ public class SpecialCard implements Card
 		return color;
 	}
 	
+	@Override
+	public boolean isDrawcard()
+	{
+		if(this.effect == "D2")
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	public String getEffect()
 	{

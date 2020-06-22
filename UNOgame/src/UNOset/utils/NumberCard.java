@@ -32,6 +32,12 @@ public class NumberCard implements Card
 		return color;
 	}
 	
+	@Override
+	public boolean isDrawcard()
+	{
+		return false;
+	}
+	
 	public int getCardNumber()
 	{
 		return num;

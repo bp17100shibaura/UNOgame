@@ -16,6 +16,12 @@ public class Hand
 		return hands.size();
 	}
 	
+	public Card cardOut(int num) 
+	{
+		Card card = hands.get(num);
+		return card;
+	}
+	
 	public Card disCard(String name)
 	{
 		int index = serchCard(name);
@@ -32,13 +38,58 @@ public class Hand
 	{
 		for(int i = 0;i < hands.size() ;i++)
 		{
-			if(name == (hands.get(i)).getCardName())
+			if(name.equals((hands.get(i)).getCardName()))
 			{
 				return i;
 			}
 		}
 		
 		return -1;
+	}
+	
+	public boolean canDiscard(Card card)
+	{
+		Card h;
+		boolean out = false;
+		String color = card.getCardColor();
+		for(int i = 0;i < hands.size();i++)
+		{
+			h = hands.get(i);
+			if(color.equals(h.getCardColor()))
+			{
+				return true;
+			}
+			else if(h instanceof WildCard)
+			{
+				return true;
+			}
+			else if(h instanceof NumberCard)
+			{
+				if(card instanceof NumberCard)
+				{
+					int a = ((NumberCard) card).getCardNumber();
+					int b = ((NumberCard) h).getCardNumber();
+					if(a == b)
+					{
+						return true;
+					}
+				}
+			}
+			else if(h instanceof SpecialCard)
+			{
+				if(card instanceof SpecialCard)
+				{
+					String a = ((SpecialCard) h).getEffect();
+					String b = ((SpecialCard) card).getEffect();
+					if(a.equals(b))
+					{
+						return true;
+					}
+				}
+			}
+		}
+		
+		return out;
 	}
 	
 	public int result()
@@ -64,6 +115,19 @@ public class Hand
 		return result;
 	}
 	
+	public boolean isdrawCard()
+	{
+		for(int i = 0;i < hands.size();i++)
+		{
+			Card card = hands.get(i);
+			if(card.isDrawcard())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String colors()
 	{
 		int r = 0;
@@ -74,17 +138,17 @@ public class Hand
 		for(int i = 0;i < hands.size();i++)
 		{
 			String temp = (hands.get(i)).getCardColor();
-			if(temp == "r")
+			if(temp.equals("r"))
 			{
 				r++;
 			}
-			else if(temp == "g")
+			else if(temp.equals("g"))
 			{
 				g++;
-			}else if(temp == "b")
+			}else if(temp.equals("b"))
 			{
 				b++;
-			}else if(temp == "y")
+			}else if(temp.equals("y"))
 			{
 				y++;
 			}else

@@ -45,6 +45,16 @@ public class Deck {
 		
 	}
 	
+	public void outCard(ArrayList<Card> outcard)
+	{
+		for(int i = 0;i < outcard.size();i++)
+		{
+			Card card = outcard.get(i);
+			int num = deck.indexOf(card);
+			deck.remove(num);
+		}
+	}
+	
 	public void shuffle()
 	{
 		Collections.shuffle(deck);

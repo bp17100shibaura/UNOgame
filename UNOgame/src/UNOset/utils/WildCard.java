@@ -11,7 +11,7 @@ public class WildCard implements Card
 	{
 		this.color = "w";
 		this.effect = effect;
-		this.name = "Wild." + color + "." + effect; 
+		this.name = "Wil." + color + "." + effect; 
 	}
 	
 	@Override
@@ -32,14 +32,33 @@ public class WildCard implements Card
 		return color;
 	}
 	
+	@Override
+	public boolean isDrawcard()
+	{
+		if(this.effect == "WD4")
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	public String getEffect()
 	{
 		return effect;
 	}
 	
+	private void reName()
+	{
+		this.name = "Wil." + color + "." + effect;
+	}
+	
 	public void changeColor(String next)
 	{
 		color = next;
+		reName();
 	}
 
 }
