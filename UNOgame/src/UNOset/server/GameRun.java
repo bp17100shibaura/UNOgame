@@ -1,4 +1,6 @@
 package UNOset.server;
+import java.util.ArrayList;
+
 import UNOset.utils.*;
 
 public class GameRun
@@ -65,6 +67,7 @@ public class GameRun
 		int turn = 1; //今のプレイヤ
 		int drawcount = 0; //ドロー2系の溜まり方
 		int turnbase = 1; //リバースで-1
+		int skipcount = 0;
 		
 		
 		//ターンベース
@@ -90,9 +93,11 @@ public class GameRun
 			{
 				server.sendMessage(turn, "stack card");
 				server.sendMessage(turn, "you draw "+ drawcount + " card");
-				if(hand[turn-1].isdrawCard()) //Dカードを持ってるか
+				str = disCard.getTopName();
+				card = list.makeCard(str);
+				if(hand[turn-1].isdrawCard() && hand[turn-1].canDiscard(card)) //Dカードを持ってるか
 				{
-					server.sendMessage(turn, "play drawcard? y/n");
+					server.sendMessage(turn, "play Dcard? y/n");
 					String s = server.catchMessage(turn);
 					if(s.matches(".*y.*")) //Dカードを使う
 					{
@@ -101,7 +106,7 @@ public class GameRun
 							str = server.catchMessage(turn);
 							if(null != (card = list.makeCard(str)))
 							{
-								if(-1 != hand[turn].serchCard(str))
+								if(-1 != hand[turn-1].serchCard(str))
 								{
 									if(card.isDrawcard())
 									{
@@ -166,8 +171,7 @@ public class GameRun
 						Card c;
 						for(int i = 0;i < drawcount;i++)
 						{
-							c = deck.draw1Card();
-							hand[turn-1].getCard(c);
+							c = command(turn);
 							server.sendMessage(turn, c.getCardName());
 						}
 						server.sendAllMessage("stack draw");
@@ -182,8 +186,7 @@ public class GameRun
 					Card c;
 					for(int i = 0;i < drawcount;i++)
 					{
-						c = deck.draw1Card();
-						hand[turn-1].getCard(c);
+						c = command(turn);
 						server.sendMessage(turn, c.getCardName());
 					}
 					server.sendAllMessage("stack draw");
@@ -200,6 +203,7 @@ public class GameRun
 					str = server.catchMessage(turn);
 					if(str.equals("command"))
 					{
+						System.out.println("command");
 						card = command(turn);
 						server.sendAllMessage("one draw");
 						server.sendMessage(turn, card.getCardName());
@@ -210,6 +214,7 @@ public class GameRun
 					}
 					else
 					{
+						 System.out.println("card");
 						break;
 					}
 				}
@@ -248,7 +253,7 @@ public class GameRun
 							server.sendMessage(turn, "retry");
 						}
 						String ef = ((WildCard) card).getEffect();
-						if(ef.equals("WD4"))
+						if(ef.matches(".*WD4.*"))
 						{
 							drawcount += 4;
 						}
@@ -266,11 +271,11 @@ public class GameRun
 					String ef = ((SpecialCard) card).getEffect();
 					if(ef.equals("Skp"))
 					{
-						//turn += turnbase;
+						skipcount++;
 					}
 					else if(ef.equals("Rvs"))
 					{
-						//turnbase = turnbase * -1;
+						turnbase = turnbase * -1;
 					}
 					else if(ef.equals("D2"))
 					{
@@ -288,7 +293,8 @@ public class GameRun
 			}
 			server.sendAllMessage("next turn");
 			/*ターン移行の処理*/
-			turn = turncount(turn,turnbase);
+			turn = turncount(turn,turnbase,skipcount);
+			skipcount = 0;
 		}
 		server.sendAllMessage("round end");
 		calculate(result);
@@ -296,10 +302,11 @@ public class GameRun
 		return result;
 	}
 	
-	private int turncount(int turn, int turnbase)
+	private int turncount(int turn, int turnbase,int skipcount)
 	{
-		//turn += turnbase;
-		/*if(turn == 0)
+		turn += turnbase;
+		turn += turnbase * skipcount;
+		if(turn == 0)
 		{
 			turn = playerNum;
 		}
@@ -310,16 +317,16 @@ public class GameRun
 		else if(turn < 0)
 		{
 			turn = playerNum + turn;
-		}*/
+		}
 		
-		if(turn == 1)
+		/*if(turn == 1)
 		{
 			turn = 2;
 		}
 		else
 		{
 			turn = 1;
-		}
+		}*/
 		
 		return turn;
 	}
@@ -327,6 +334,13 @@ public class GameRun
 	private Card command(int turn)
 	{
 		Card card = deck.draw1Card();
+		if(card == null)
+		{
+			ArrayList<Card> ndeck = disCard.openDiscard();
+			deck.newDeck(ndeck);
+			disCard.delete();
+			card = deck.draw1Card();
+		}
 		hand[turn-1].getCard(card);
 		return card;
 	}
@@ -346,6 +360,7 @@ public class GameRun
 			if(score[i] == 0)
 			{
 				score[i] = temp;
+				result.winner = i+1;
 			}
 		}
 		result.score = score;

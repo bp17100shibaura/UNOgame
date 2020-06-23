@@ -25,8 +25,8 @@ public class CUIplayer
 		PrintWriter write = player.getWriter();
 		Reader server = new Reader(write,read);
 		
-		int roundNum = 4;
-		int playerNum = 2;
+		int roundNum = 3;
+		int playerNum = 4;
 		int pnum = 0;
 		int roundcount = 0;
 		CardList list = new CardList();
@@ -63,7 +63,6 @@ public class CUIplayer
 				card = list.makeCard(str);
 				discard.discard(card);
 			   /*ラウンド*/
-				roundcount = 0;
 				while(true)
 				{
 					str = server.read();
@@ -88,12 +87,9 @@ public class CUIplayer
 								   card = list.makeCard(str);
 								   hand.getCard(card);
 							   }
-							   server.read();
-							   server.read();
 						   }
 						   else //引くか選ぶ
 						   {
-							   server.read();
 							   do
 							   {
 								   str = br.readLine();
@@ -139,11 +135,11 @@ public class CUIplayer
 											   break;
 										   }
 									   }
+								   }else
+								   {
+									   server.read();
 								   }
 								   discard.discard(card);
-								   
-								   server.read();
-								   server.read();
 							   }
 							   else //ドロー系を重ねない
 							   {
@@ -156,8 +152,6 @@ public class CUIplayer
 									   card = list.makeCard(str);
 									   hand.getCard(card);
 								   }
-								   server.read();
-								   server.read();
 							   }
 						   }
 					   }
@@ -207,10 +201,10 @@ public class CUIplayer
 									   server.write(str);
 									   break;
 								   }
-								   System.out.println("sdf");
 							   }
 							   System.out.println("retry");
 						   }
+						   server.read();
 						   server.read();
 						   card = hand.disCard(str);
 						   
@@ -232,11 +226,9 @@ public class CUIplayer
 						   }
 						   
 						   discard.discard(card);
-						   server.read();
-						   
-						   server.read();
-						   server.read();
 					   }
+					   server.read();
+					   server.read();
 					   server.read();
 					   
 					   str = server.read();
@@ -266,6 +258,7 @@ public class CUIplayer
 					   str = server.read();
 					   if(str.matches("round end"))
 					   {
+						   System.out.println("round "+ (roundcount+1) + " end");
 						   break;
 					   }
 					}
