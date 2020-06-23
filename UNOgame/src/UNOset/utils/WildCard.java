@@ -35,7 +35,7 @@ public class WildCard implements Card
 	@Override
 	public boolean isDrawcard()
 	{
-		if(this.effect == "WD4")
+		if(this.effect.matches(".*WD4.*"))
 		{
 			return true;
 		}

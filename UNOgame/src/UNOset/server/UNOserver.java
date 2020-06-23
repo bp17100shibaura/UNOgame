@@ -5,18 +5,20 @@ public class UNOserver
 
 	public static void main(String[] args)
 	{
-		int playerNum = 2;
+		int playerNum = 4;
 		
 		//ポートの設定
 		//int a = Integer.parseInt(args[0]);
 		//int b = Integer.parseInt(args[1]);
 		
-		int a = 556;
-		int b = 777;
+		int a = 555;
+		int b = 666;
+		int c = 777;
+		int d = 888;
 		
 		//TCPserverとの接続
-	    TCPserver server = new TCPserver(2);
-	    if(!server.connect(a, b))
+	    TCPserver server = new TCPserver(playerNum);
+	    if(!server.connect(a, b, c ,d))
 	    {
 	    	System.out.println("connect miss");
 	    	return;
@@ -28,7 +30,7 @@ public class UNOserver
 	    }
 	    
 	    //試合数
-	    int roundNum = 1;
+	    int roundNum = 3;
 	    int roundCount = 0;
 	    
 	    int[][] scoreData = new int[playerNum][roundNum];
@@ -42,7 +44,6 @@ public class UNOserver
 	    //マッチの管理
 		while(true)
 		{
-			roundCount++;
 			
 			//1ラウンド
 			server.sendAllMessage("Round"+roundCount);
@@ -56,7 +57,7 @@ public class UNOserver
 				scoreData[i][roundCount] = data.score[i];
 			}
 			
-			
+			roundCount++;
 			if(roundCount == roundNum)
 			{
 				break;
@@ -74,7 +75,7 @@ public class UNOserver
 			{
 				temp += scoreData[i][j];
 			}
-			server.sendAllMessage("player"+ i +"'s score");
+			server.sendAllMessage("player"+ (i+1) +"'s score");
 			server.sendAllMessage(Integer.toString(temp));
 			if(temp > topS)
 			{

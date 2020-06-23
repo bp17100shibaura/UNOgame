@@ -61,6 +61,14 @@ public class DisCard
 	   return false;
    }
    
+   public void delete()
+   {
+	   while(cards.size() == 1)
+	   {
+		   cards.remove(0);
+	   }
+   }
+   
    public int getNum()
    {
 	   return cards.size();   

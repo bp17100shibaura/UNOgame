@@ -45,6 +45,12 @@ public class Deck {
 		
 	}
 	
+	public void newDeck(ArrayList<Card> ndeck)
+	{
+		deck = ndeck;
+		this.shuffle();
+	}
+	
 	public void outCard(ArrayList<Card> outcard)
 	{
 		for(int i = 0;i < outcard.size();i++)

@@ -18,9 +18,9 @@ public class TCPserver
 	}
 
 	//player‚ÆÚ‘±
-	boolean connect(int a, int b)
+	boolean connect(int a, int b, int c, int d)
 	{
-		if(0 == server.playerSet(a, b))
+		if(0 == server.playerSet(a, b, c, d))
 		{
 			return false;
 		}
@@ -57,6 +57,7 @@ public class TCPserver
 	void sendMessage(int player,String str)
 	{
 		write[player -1].println(str);
+		System.out.println(str);
 	}
 	
 	//‘Sˆõ‚É‘—M
@@ -66,6 +67,7 @@ public class TCPserver
 		{
 			write[i].println(str);
 		}
+		System.out.println(str);
 	}
 	
 	String catchMessage(int player)
@@ -78,6 +80,7 @@ public class TCPserver
 		{
 			e.printStackTrace();
 		}
+		System.out.println(str);
 		return str;
 	}
 	
