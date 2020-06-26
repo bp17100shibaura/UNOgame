@@ -35,7 +35,7 @@ public class SpecialCard implements Card
 	@Override
 	public boolean isDrawcard()
 	{
-		if(this.effect.matches(".*D2.*"))
+		if(effect.equals("D2"))
 		{
 			return true;
 		}

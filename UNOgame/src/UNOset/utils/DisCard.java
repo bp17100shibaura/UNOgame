@@ -8,7 +8,9 @@ public class DisCard
    
    public void discard(Card card)
    {
-	   cards.add(card);
+	   CardList l = new CardList();
+	   Card c = l.makeCard(card.getCardName());
+	   cards.add(c);
    }
    
    public ArrayList<Card> openDiscard()
@@ -17,9 +19,18 @@ public class DisCard
 	   return openCard;
    }
    
+   public void cardin(ArrayList<Card> in)
+   {
+	   this.cards = in;
+   }
+   
    public String getTopName()
    {
 	   Card top = cards.get(cards.size()-1);
+	   if(top == null)
+	   {
+		   top = cards.get(cards.size()-2);
+	   }
 	   return top.getCardName();
    }
    

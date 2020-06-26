@@ -44,6 +44,6 @@ public class Reader
 	void write(String str)
 	{
 		write.println(str);
-		System.out.println(str);
+		//System.out.println(str);
 	}
 }

@@ -17,6 +17,7 @@ public class WildCard implements Card
 	@Override
 	public String getCardName() 
 	{
+		this.reName();
 		return name;
 	}
 

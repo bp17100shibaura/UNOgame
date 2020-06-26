@@ -208,14 +208,28 @@ public class GameRun
 						server.sendAllMessage("one draw");
 						server.sendMessage(turn, card.getCardName());
 					}
-					else if(!str.equals("card"))
+					else if(str.equals("card"))
 					{
-						server.sendMessage(turn, "error");
+						break;
+					}
+					else if(str.equals("turnbase"))
+					{
+						server.sendMessage(turn, String.valueOf(turnbase));
+					}
+					else if(str.equals("hand"))
+					{
+						int a = hand[0].getNum();
+						int b = hand[1].getNum();
+						int c = hand[2].getNum();
+						int d = hand[3].getNum();
+						server.sendMessage(turn,String.valueOf(a));
+						server.sendMessage(turn,String.valueOf(b));
+						server.sendMessage(turn,String.valueOf(c));
+						server.sendMessage(turn,String.valueOf(d));
 					}
 					else
 					{
-						 System.out.println("card");
-						break;
+						 System.out.println("eroor");
 					}
 				}
 			

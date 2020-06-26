@@ -1,5 +1,8 @@
 package UNOset.server;
-
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 public class UNOserver
 {
 
@@ -68,21 +71,45 @@ public class UNOserver
 		server.sendAllMessage("final score");
 		int topS = -1000;
 		int topP = 0;
-		for(int i= 0;i < playerNum;i++)
+		try 
 		{
-			int temp = 0;
-			for(int j = 0;j < roundNum;j++)
+			FileWriter fw = new FileWriter("C:\\Users\\ken\\Desktop\\test.csv", true);
+            PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+            pw.print(",");
+			pw.print("R1");
+			pw.print(",");
+			pw.print("R2");
+			pw.print(",");
+			pw.print("R3");
+			pw.print(",");
+			pw.print("LAST");
+			pw.println();
+			for(int i= 0;i < playerNum;i++)
 			{
-				temp += scoreData[i][j];
+				pw.print("P"+ (i+1));
+				pw.print(",");
+				int temp = 0;
+				for(int j = 0;j < roundNum;j++)
+				{
+					pw.print(scoreData[i][j]);
+					pw.print(",");
+					temp += scoreData[i][j];
+				}
+				server.sendAllMessage("player"+ (i+1) +"'s score");
+				server.sendAllMessage(Integer.toString(temp));
+				pw.print(temp);
+				pw.println();
+				if(temp > topS)
+				{
+					topS = temp;
+					topP = i + 1;
+				}
 			}
-			server.sendAllMessage("player"+ (i+1) +"'s score");
-			server.sendAllMessage(Integer.toString(temp));
-			if(temp > topS)
-			{
-				topS = temp;
-				topP = i + 1;
-			}
-		}
+			pw.close();
+		}catch (IOException ex) 
+		{
+            ex.printStackTrace();
+        }
 		server.sendAllMessage("winner player"+ topP);
 		server.sendAllMessage("winner score "+ topS);
 		
