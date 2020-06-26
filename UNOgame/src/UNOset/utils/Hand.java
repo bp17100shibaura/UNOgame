@@ -16,6 +16,16 @@ public class Hand
 		return hands.size();
 	}
 	
+	public ArrayList<Card> handout()
+	{
+		ArrayList<Card> temp = new ArrayList<>(hands);
+		return temp;
+	}
+	public void handin(ArrayList<Card> n)
+	{
+		this.hands = n;
+	}
+	
 	public Card cardOut(int num) 
 	{
 		Card card = hands.get(num);
@@ -27,6 +37,7 @@ public class Hand
 		int index = serchCard(name);
 		if(index == -1)
 		{
+			
 			return null;
 		}
 		
@@ -45,6 +56,18 @@ public class Hand
 		}
 		
 		return -1;
+	}
+	
+	public void crean()
+	{
+		for(int i =0;i < hands.size();i++)
+		{
+			Card card = hands.get(i);
+			if(card instanceof WildCard)
+			{
+				((WildCard) card).changeColor("w");
+			}
+		}
 	}
 	
 	public boolean canDiscard(Card card)
@@ -92,6 +115,34 @@ public class Hand
 		return out;
 	}
 	
+	public boolean dcanDiscard(Card card)
+	{
+		Card h;
+		boolean out = false;
+		String color = card.getCardColor();
+		for(int i = 0;i < hands.size();i++)
+		{
+			h = hands.get(i);
+			if(h.isDrawcard())
+			{
+				if(color == h.getCardColor())
+				{
+					return true;
+				}
+				else
+				{
+					if(h instanceof WildCard)
+					{
+						return true;
+					}
+				}
+			}
+		}
+		
+		return out;
+	}
+	
+	
 	public int result()
 	{
 		int result = 0;
@@ -128,34 +179,17 @@ public class Hand
 		return false;
 	}
 	
-	public String colors()
+	public int colors(String co)
 	{
-		int r = 0;
-		int g = 0;
-		int y = 0;
-		int b = 0;
-		int w = 0;
+		int num = 0;
 		for(int i = 0;i < hands.size();i++)
 		{
 			String temp = (hands.get(i)).getCardColor();
-			if(temp.equals("r"))
+			if(temp.equals(co))
 			{
-				r++;
-			}
-			else if(temp.equals("g"))
-			{
-				g++;
-			}else if(temp.equals("b"))
-			{
-				b++;
-			}else if(temp.equals("y"))
-			{
-				y++;
-			}else
-			{
-				w++;
+				num++;
 			}
 		}
-		return "R"+ r +"/G" +g +"/B" +b +"/Y"+ y + "/W" + w ;
+		return num;
 	}
 }

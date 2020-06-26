@@ -56,9 +56,35 @@ public class Deck {
 		for(int i = 0;i < outcard.size();i++)
 		{
 			Card card = outcard.get(i);
-			int num = deck.indexOf(card);
-			deck.remove(num);
+			if(card instanceof WildCard)
+			{
+				((WildCard) card).changeColor("w");
+			}
+			int num = this.serchCard(card.getCardName());
+			if(num > 0)
+			{
+				deck.remove(num);
+			}
 		}
+	}
+	
+	public int serchCard(String name)
+	{
+		for(int i = 0;i < deck.size() ;i++)
+		{
+			if(name.equals((deck.get(i)).getCardName()))
+			{
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	public ArrayList<Card> outdeck()
+	{
+		ArrayList<Card> ndeck = new ArrayList<>(deck);
+		return ndeck;
 	}
 	
 	public void shuffle()
