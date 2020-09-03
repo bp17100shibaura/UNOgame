@@ -220,12 +220,12 @@ public class GameRun
 					{
 						int a = hand[0].getNum();
 						int b = hand[1].getNum();
-						int c = hand[2].getNum();
-						int d = hand[3].getNum();
+						//int c = hand[2].getNum();
+						//int d = hand[3].getNum();
 						server.sendMessage(turn,String.valueOf(a));
 						server.sendMessage(turn,String.valueOf(b));
-						server.sendMessage(turn,String.valueOf(c));
-						server.sendMessage(turn,String.valueOf(d));
+						//server.sendMessage(turn,String.valueOf(c));
+						//server.sendMessage(turn,String.valueOf(d));
 					}
 					else
 					{
@@ -318,7 +318,19 @@ public class GameRun
 	
 	private int turncount(int turn, int turnbase,int skipcount)
 	{
-		turn += turnbase;
+		if(skipcount == 0) 
+		{
+			if(turn == 1)
+			{
+				turn = 2;
+			}
+			else
+			{
+				turn = 1;
+			}
+		}
+			/*turn += turnbase;
+		
 		turn += turnbase * skipcount;
 		if(turn == 0)
 		{
@@ -331,7 +343,7 @@ public class GameRun
 		else if(turn < 0)
 		{
 			turn = playerNum + turn;
-		}
+		}*/
 		
 		/*if(turn == 1)
 		{

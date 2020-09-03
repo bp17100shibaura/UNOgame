@@ -18,9 +18,9 @@ public class TCPserver
 	}
 
 	//player‚ÆÚ‘±
-	boolean connect(int a, int b, int c, int d)
+	boolean connect(int a, int b)
 	{
-		if(0 == server.playerSet(a, b, c, d))
+		if(0 == server.playerSet(a, b))
 		{
 			return false;
 		}

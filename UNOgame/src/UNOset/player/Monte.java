@@ -13,7 +13,7 @@ public class Monte
 	public static void main(String[] args) 
 	{
 		//int num = Integer.parseInt(args[0]);
-		int num = 555;
+		int num = 666;
 	    GamePlayer player = new GamePlayer();
 	    if(0 == player.playerSet(num))
 	    {
@@ -25,10 +25,10 @@ public class Monte
 		PrintWriter write = player.getWriter();
 		
 		int roundNum = 3;
-		int playerNum = 4;
+		int playerNum = 2;
 		int pnum = 0;
 		int roundcount = 0;
-		int[] hdata = new int[4];
+		int[] hdata = new int[2];
 		int base;
 		CardList list = new CardList();
 		Card card;
@@ -140,12 +140,12 @@ public class Monte
 										   }
 									   }
 								   }
-								   server.write(card.getCardName());
+								   server.write(out.getCardName());
 								   server.read();
 								   hand.crean();
-								   hand.disCard(card.getCardName());
+								   hand.disCard(out.getCardName());
 								   
-								   if(card instanceof WildCard)
+								   if(out instanceof WildCard)
 								   {
 									   server.read();
 									   while(true)
@@ -166,7 +166,7 @@ public class Monte
 										   str = server.read();
 										   if(str.matches(".*OK.*"))
 										   {
-											   ((WildCard) card).changeColor(color);
+											   ((WildCard) out).changeColor(color);
 											   break;
 										   }
 									   }
@@ -174,7 +174,7 @@ public class Monte
 								   {
 									   server.read();
 								   }
-								   discard.discard(card);
+								   discard.discard(out);
 							   }
 							   else //ドロー系を重ねない
 							   {
@@ -212,7 +212,7 @@ public class Monte
 							   else
 							   {
 								   server.write("hand");
-								   for(int i = 0;i < 4;i++)
+								   for(int i = 0;i < 2;i++) //実験用
 								   {
 									   str = server.read();
 									   hdata[i] = Integer.parseInt(str);
@@ -241,7 +241,7 @@ public class Monte
 								   System.out.println(card.getCardName() + "d");
 								   dd++;
 							   }
-							   if(/*discard.isDiscard(card)*/true)
+							   if(true)
 							   {
 								   col = card.getCardColor();
 								   if(card instanceof WildCard)
@@ -250,6 +250,7 @@ public class Monte
 								   }
 								   str = card.getCardName();
 								   server.write(str);
+								   
 								   break;
 							   }
 							   /*else

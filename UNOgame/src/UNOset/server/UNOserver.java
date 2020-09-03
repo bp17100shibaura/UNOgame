@@ -8,7 +8,7 @@ public class UNOserver
 
 	public static void main(String[] args)
 	{
-		int playerNum = 4;
+		int playerNum = 2;
 		
 		//ƒ|[ƒg‚Ìİ’è
 		//int a = Integer.parseInt(args[0]);
@@ -16,12 +16,12 @@ public class UNOserver
 		
 		int a = 555;
 		int b = 666;
-		int c = 777;
-		int d = 888;
+		//int c = 777;
+		//int d = 888;
 		
 		//TCPserver‚Æ‚ÌÚ‘±
 	    TCPserver server = new TCPserver(playerNum);
-	    if(!server.connect(a, b, c ,d))
+	    if(!server.connect(a, b))
 	    {
 	    	System.out.println("connect miss");
 	    	return;
