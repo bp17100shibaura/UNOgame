@@ -84,4 +84,20 @@ public class DisCard
    {
 	   return cards.size();   
    }
+   
+   public void cardFix()
+   {
+	   int n = this.cards.size();
+	   Card temp;
+	   for(int i = 0;i < n;i++)
+	   {
+		   temp = cards.get(i);
+		   if(temp == null)
+		   {
+			   cards.remove(i);
+			   i--;
+			   n--;
+		   }
+	   }
+   }
 }

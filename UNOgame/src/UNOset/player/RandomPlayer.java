@@ -11,8 +11,8 @@ public class RandomPlayer {
 
 	public static void main(String[] args)
 	{
-		int num = Integer.parseInt(args[0]);
-		
+		//int num = Integer.parseInt(args[0]);
+		int num = 555;
 	    GamePlayer player = new GamePlayer();
 	    if(0 == player.playerSet(num))
 	    {
@@ -24,7 +24,7 @@ public class RandomPlayer {
 		PrintWriter write = player.getWriter();
 		
 		int roundNum = 3;
-		int playerNum = 4;
+		int playerNum = 2;
 		int pnum = 0;
 		int roundcount = 0;
 		CardList list = new CardList();

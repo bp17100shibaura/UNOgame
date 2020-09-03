@@ -13,6 +13,7 @@ public class Hand
 	
 	public int getNum()
 	{
+		this.cardFix();
 		return hands.size();
 	}
 	
@@ -47,7 +48,7 @@ public class Hand
 	
 	public int serchCard(String name)
 	{
-		for(int i = 0;i < hands.size() ;i++)
+		for(int i = 0;i < this.getNum() ;i++)
 		{
 			if(name.equals((hands.get(i)).getCardName()))
 			{
@@ -60,7 +61,7 @@ public class Hand
 	
 	public void crean()
 	{
-		for(int i =0;i < hands.size();i++)
+		for(int i =0;i < this.getNum();i++)
 		{
 			Card card = hands.get(i);
 			if(card instanceof WildCard)
@@ -75,7 +76,7 @@ public class Hand
 		Card h;
 		boolean out = false;
 		String color = card.getCardColor();
-		for(int i = 0;i < hands.size();i++)
+		for(int i = 0;i < this.getNum();i++)
 		{
 			h = hands.get(i);
 			if(color.equals(h.getCardColor()))
@@ -120,7 +121,7 @@ public class Hand
 		Card h;
 		boolean out = false;
 		String color = card.getCardColor();
-		for(int i = 0;i < hands.size();i++)
+		for(int i = 0;i < this.getNum();i++)
 		{
 			h = hands.get(i);
 			if(h.isDrawcard())
@@ -142,12 +143,28 @@ public class Hand
 		return out;
 	}
 	
+	public void cardFix()
+	{
+		int n = this.hands.size();
+		Card temp;
+		for(int i = 0;i < n;i++)
+		{
+			temp = hands.get(i);
+			if(temp == null)
+			{
+				hands.remove(i);
+				i--;
+				n--;
+			}
+		}
+	}
+	
 	
 	public int result()
 	{
 		int result = 0;
 		Card card;
-		for(int i = 0;i < hands.size();i++)
+		for(int i = 0;i < this.getNum();i++)
 		{
 			card = hands.get(i);
 			if(card instanceof NumberCard)
@@ -168,7 +185,7 @@ public class Hand
 	
 	public boolean isdrawCard()
 	{
-		for(int i = 0;i < hands.size();i++)
+		for(int i = 0;i < this.getNum();i++)
 		{
 			Card card = hands.get(i);
 			if(card.isDrawcard())
@@ -182,7 +199,7 @@ public class Hand
 	public int colors(String co)
 	{
 		int num = 0;
-		for(int i = 0;i < hands.size();i++)
+		for(int i = 0;i < this.getNum();i++)
 		{
 			String temp = (hands.get(i)).getCardColor();
 			if(temp.equals(co))
