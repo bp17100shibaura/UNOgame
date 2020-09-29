@@ -74,10 +74,13 @@ public class DisCard
    
    public void delete()
    {
-	   while(cards.size() == 1)
+	   Card top = cards.get(cards.size()-1);
+	   if(top == null)
 	   {
-		   cards.remove(0);
+		   top = cards.get(cards.size()-2);
 	   }
+	   cards.clear();
+	   cards.add(top);
    }
    
    public int getNum()
