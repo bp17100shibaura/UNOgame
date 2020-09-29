@@ -253,7 +253,7 @@ public class Montecorlo
 		while(true)
 		{			
 			limit ++;
-			if(limit == 1200)
+			if(limit == 800)
 			{
 				result = new RoundData();
 				result.score = new int[2];

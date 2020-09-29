@@ -196,6 +196,20 @@ public class Hand
 		return false;
 	}
 	
+	public int drawnum()
+	{
+		int num = 0;
+		for(int i = 0;i < this.getNum();i++)
+		{
+			Card card = hands.get(i);
+			if(card.isDrawcard())
+			{
+				num++;
+			}
+		}
+		return num;
+	}
+	
 	public int colors(String co)
 	{
 		int num = 0;

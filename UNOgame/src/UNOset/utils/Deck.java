@@ -47,6 +47,7 @@ public class Deck {
 	
 	public void newDeck(ArrayList<Card> ndeck)
 	{
+		deck.clear();
 		deck = ndeck;
 		this.shuffle();
 	}
