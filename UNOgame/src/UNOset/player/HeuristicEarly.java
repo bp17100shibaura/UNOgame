@@ -191,6 +191,7 @@ public class HeuristicEarly {
 							   int nextEval = 0;
 							   boolean wcard = false;
 							   boolean dcard = false;
+							   
 							   if(hand.drawnum() > 1)
 							   {
 								   dcard = true;
@@ -226,14 +227,19 @@ public class HeuristicEarly {
 							   }
 							   
 							   
-							   if(discard.isDiscard(card))
+							   if(discard.isDiscard(nextCard))
 							   {
-								   str = card.getCardName();
+								   str = nextCard.getCardName();
 								   server.write(str);
-								   break;
+								   String sr = server.read();
+								   if(sr.equals("ok"))
+								   {
+									  break; 
+								   }
+								   System.out.println(str);
 							   }
 						   }
-						   server.read();
+						   //server.read();
 						   server.read();
 						   card = hand.disCard(str);
 						   

@@ -4,8 +4,7 @@ import java.util.Random;
 import java.util.ArrayList;
 import UNOset.server.RoundData;
 
-public class Montecorlo 
-{
+public class DMontecorlo {
 	Deck deck;
 	int playerNum;
 	Hand myhand;
@@ -14,8 +13,9 @@ public class Montecorlo
 	CardList list = new CardList();
 	int turnbase;
 	Card topcard;
+	int dCount;
 	
-	public Montecorlo(DisCard dis, Hand myhand,int plyerNum, int num, int turnbase)
+	public DMontecorlo(DisCard dis, Hand myhand,int plyerNum, int num, int turnbase, int dCount)
 	{
 		this.myhand = new Hand();
 		this.myhand.handin(myhand.handout());
@@ -29,6 +29,7 @@ public class Montecorlo
 		this.num = num;
 		this.handNum = new int[playerNum];
 		this.turnbase = turnbase;
+		this.dCount = dCount;
 		ArrayList<Card> temp = myhand.handout();
 		this.deck = new Deck();
 		deck.deckMake();
@@ -38,7 +39,7 @@ public class Montecorlo
 		deck.shuffle();
 	}
 	
-	public void setHand(int[] data)
+	public void setHand(int[] data) //相手手札数から手札を作成
 	{
 		for(int i = 0;i < 2;i++)
 		{
@@ -69,38 +70,26 @@ public class Montecorlo
 		RoundData best = new RoundData();
 		best.score = new int[4];
 		best.score[this.num-1] = -9999;
-		for(int i = 0;i < myhand.getNum();i++)
+		RoundData temp;
+		for(int i = 0;i < this.myhand.getNum();i++)
 		{
-			Card card = myhand.cardOut(i);
-			card = list.makeCard(card.getCardName());
-			RoundData temp;
+			Card card = this.myhand.cardOut(i);
 			if(this.can(card))
 			{
-				if(bestcard == null)
-				{
-					bestcard = card;
-					if(bestcard instanceof WildCard)
-					{
-						((WildCard) bestcard).changeColor("r");
-					}
-				}
 				if(card instanceof WildCard)
 				{
 					for(int j = 0;j < 4;j++)
 					{
 						((WildCard) card).changeColor(co[j]);
-						System.out.println(card.getCardName());
 						RoundData tdata = new RoundData();
 						tdata.score = new int[2];
 						for(int k = 0;k < count;k++)
 						{
-							//System.out.println(j);
 							temp = run(card);
 							tdata.score[0] += temp.score[0];
 							tdata.score[1] += temp.score[1];
 							//tdata.score[2] += temp.score[2];
 							//tdata.score[3] += temp.score[3];
-							//System.out.println("nnnn");
 						}
 						if(eval(best,tdata,count) || bestcard == null)
 						{
@@ -112,17 +101,14 @@ public class Montecorlo
 				}else
 				{
 					RoundData tdata = new RoundData();
-					System.out.println(card.getCardName() + "d");
 					tdata.score = new int[2];
 					for(int j = 0;j < count;j++)
 					{
-						//System.out.println(j);
 						temp = run(card);
 						tdata.score[0] += temp.score[0];
 						tdata.score[1] += temp.score[1];
 						//tdata.score[2] += temp.score[2];
 						//tdata.score[3] += temp.score[3];
-						//System.out.println("nnnn");
 					}
 					if(eval(best,tdata,count) || bestcard == null)
 					{
@@ -133,41 +119,39 @@ public class Montecorlo
 				}
 			}
 		}
+		
+		Card pass = new Pass();
+		RoundData tdata = new RoundData();
+		tdata.score = new int[2];
+		for(int j = 0;j < count;j++)
+		{
+			temp = run(pass);
+			tdata.score[0] += temp.score[0];
+			tdata.score[1] += temp.score[1];
+			//tdata.score[2] += temp.score[2];
+			//tdata.score[3] += temp.score[3];
+		}
+		if(eval(best,tdata,count) || bestcard == null)
+		{
+			best = tdata;
+			bestcard = pass;
+		}
+		
 		System.out.println(bestcard.getCardName()+ "best");
 		return bestcard;
 	}
 	
 	public boolean can(Card card)
 	{
-		if(topcard.getCardColor().equals(card.getCardColor()))
+		if(!card.isDrawcard())
+		{
+			return false;
+		}
+		if(topcard.getCardType() == 2)
 		{
 			return true;
 		}
-		else if(card instanceof NumberCard)
-		{
-		    if(topcard instanceof NumberCard)
-		    {
-			    int a = ((NumberCard) card).getCardNumber();
-			    int b = ((NumberCard) topcard).getCardNumber();
-			    if(a == b)
-			    {
-				    return true;
-			    }
-		    }
-		}
-		else if(card instanceof SpecialCard)
-		{
-		    if(topcard instanceof SpecialCard)
-		    {
-			    String a = ((SpecialCard) topcard).getEffect();
-			    String b = ((SpecialCard) card).getEffect();
-			    if(a.equals(b))
-			    {
-				    return true;
-			    } 
-		   }
-		}
-		else if(card instanceof WildCard)
+		if(card.getCardType() == 3)
 		{
 			return true;
 		}
@@ -215,37 +199,50 @@ public class Montecorlo
 		int base = this.turnbase;
 		int turn = this.num;
 		int skipcount = 0;
-		int drawcount = 0;
-		tdis.discard(start);
-		Card tt = list.makeCard(start.getCardName());
-		//System.out.println(start.getCardName() + "s");
-		if(tt instanceof WildCard)
+		int drawcount = this.dCount;
+		if(start.getCardType() == 0)
 		{
-			((WildCard) tt).changeColor("w");
-		}
-		thand[this.num-1].disCard(tt.getCardName());
-		if(tt instanceof SpecialCard)
-		{
-			String ef = ((SpecialCard) tt).getEffect();
-			if(ef.equals("Skp"))
+			if(dCount != 0)
 			{
-				skipcount++;
-			}
-			else if(ef.equals("Rvs"))
-			{
-				base = base * -1;
-			}
-			else if(ef.equals("D2"))
-			{
-				drawcount += 2;
+				for(int i = 0;i < dCount; i++)
+				{
+					thand[this.num-1].getCard(getCard(tdeck, tdis));
+				}
+				dCount = 0;
 			}
 		}
-		else if(tt instanceof WildCard)
+		else
 		{
-			String ef = ((WildCard) tt).getEffect();
-			if(ef.matches(".*WD4.*"))
+			tdis.discard(start);
+			Card tt = list.makeCard(start.getCardName());
+			if(tt instanceof WildCard)
 			{
-				drawcount += 4;
+				((WildCard) tt).changeColor("w");
+			}
+			thand[this.num-1].disCard(tt.getCardName());
+			if(tt instanceof SpecialCard)
+			{
+				String ef = ((SpecialCard) tt).getEffect();
+				if(ef.equals("Skp"))
+				{
+					skipcount++;
+				}
+				else if(ef.equals("Rvs"))
+				{
+					base = base * -1;
+				}
+				else if(ef.equals("D2"))
+				{
+					drawcount += 2;
+				}
+			}
+			else if(tt instanceof WildCard)
+			{
+				String ef = ((WildCard) tt).getEffect();
+				if(ef.matches(".*WD4.*"))
+				{
+					drawcount += 4;
+				}
 			}
 		}
 		
@@ -273,11 +270,6 @@ public class Montecorlo
 				card = list.makeCard(str);
 				if(thand[turn-1].isdrawCard() && thand[turn-1].dcanDiscard(card)) //Dカードを持ってるか
 				{
-					/*for(int i = 0;i < thand[turn-1].getNum();i++)
-					{
-						card = thand[turn -1].cardOut(i);
-						//System.out.println(card.getCardName());
-					}*/
 					int r = rand.nextInt(2);
 					if(r == 0) //Dカードを使う
 					{
@@ -285,10 +277,8 @@ public class Montecorlo
 						{
 							r = rand.nextInt(thand[turn-1].getNum());
 							card = thand[turn-1].cardOut(r);
-							//System.out.println(card.getCardName());
 							 if(card.isDrawcard())
 							 {
-								 //System.out.println(card.getCardName());
 								 if(tdis.isDiscard(card))
 								 {
 									 break;
@@ -303,7 +293,6 @@ public class Montecorlo
 							r = rand.nextInt(4);
 							((WildCard) card).changeColor(co[r]);
 						}
-						//System.out.println(card.getCardName() + "d");
 						tdis.discard(card);
 					}
 					else //Dカードを使わない

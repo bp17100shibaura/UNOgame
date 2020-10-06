@@ -97,49 +97,31 @@ public class Monte
 						   }
 						   else //引くか選ぶ
 						   {
-							   /*ここは状況により分岐*/
-							   int a = 0;
-							   for(int i = 0;i < hand.getNum();i++)
+							   server.write("hand");
+							   for(int i = 0;i < 2;i++) //実験用
 							   {
-								   card = hand.cardOut(i);
-								   if(card.isDrawcard())
-								   {
-									   a++;
-								   }
+								   str = server.read();
+								   hdata[i] = Integer.parseInt(str);
 							   }
-							   int r = 1;
-							   if(a > 1)
+							   str = server.read();
+							   int dCount = Integer.parseInt(str);
+							   str = server.read();
+							   base = Integer.parseInt(str);
+							   
+							   DMontecorlo dmonte = new DMontecorlo(discard, hand, playerNum, pnum, base, dCount);
+							   dmonte.setHand(hdata);
+							   card = dmonte.cal();
+							      
+							   if(card.getCardType() != 0) //ドロー系を重ねる
 							   {
-								   r = 0;
-							   }
-							   if(r == 0) //ドロー系を重ねる
-							   {
-								   System.out.println("b");
 								   server.write("y");
-								   for(int i = 0;i < hand.getNum();i++)
+								   String col = "b";
+								   if(card instanceof WildCard)
 								   {
-									   card = hand.cardOut(i);
-									   if(card.isDrawcard())
-									   {
-										   System.out.println(i + card.getCardName());
-									   }
+									   col = card.getCardColor();
+									   ((WildCard) card).changeColor("w");
 								   }
-								   Card out = null;
-								   for(int i = 0;i < hand.getNum();i++)
-								   {
-									   card = hand.cardOut(i);
-									   if(card.isDrawcard())
-									   {
-										   if(out == null)
-										   {
-											   out = card;
-										   }
-										   else if(out instanceof WildCard)
-										   {
-											   out = card;
-										   }
-									   }
-								   }
+								   Card out = card;
 								   server.write(out.getCardName());
 								   server.read();
 								   hand.crean();
@@ -147,29 +129,10 @@ public class Monte
 								   
 								   if(out instanceof WildCard)
 								   {
-									   server.read();
-									   while(true)
-									   {
-										   int s = 1;
-										   int t = 0;
-										   /*手札で一番多い色に*/
-										   for(int i = 0;i < hand.getNum();i++)
-										   {
-											   int d = hand.colors(co[i]);
-											   if(d > t)
-											   {
-												   s = i;
-											   }
-										   }
-										   String color = co[s];
-										   server.write(color);
-										   str = server.read();
-										   if(str.matches(".*OK.*"))
-										   {
-											   ((WildCard) out).changeColor(color);
-											   break;
-										   }
-									   }
+									   String color = col;
+									   server.write(color);
+									   str = server.read();
+									   ((WildCard) out).changeColor(color);
 								   }else
 								   {
 									   server.read();
@@ -229,18 +192,12 @@ public class Monte
 							   System.out.println(i + card.getCardName());
 						   }
 						   String col;
-						   int dd = 0;
 						   while(true)
 						   {
 							   /*ここをモンテカルロで*/
 							   Montecorlo monte = new Montecorlo(discard, hand, playerNum, pnum, base);
-							   monte.makeHand(hdata);
+							   monte.setHand(hdata);
 							   card = monte.cal();
-							   if(dd == 0)
-							   {
-								   System.out.println(card.getCardName() + "d");
-								   dd++;
-							   }
 							   if(true)
 							   {
 								   col = card.getCardColor();
@@ -253,10 +210,6 @@ public class Monte
 								   
 								   break;
 							   }
-							   /*else
-							   {
-								   //System.out.println("monte not back");
-							   }*/
 						   }
 						   server.read();
 						   server.read();
