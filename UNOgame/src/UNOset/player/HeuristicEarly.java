@@ -15,7 +15,16 @@ import UNOset.utils.WildCard;
 public class HeuristicEarly {
 
 	public static void main(String[] args) {
-		int num = 555;
+		
+		int num = 3000;
+		try
+		{
+			num = Integer.parseInt(args[0]);
+		}catch(NumberFormatException e)
+		{
+			num = 3000;
+		}
+		
 	    GamePlayer player = new GamePlayer();
 	    if(0 == player.playerSet(num))
 	    {

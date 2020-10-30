@@ -34,6 +34,16 @@ public class DisCard
 	   return top.getCardName();
    }
    
+   public String getTopColor()
+   {
+	   Card top = cards.get(cards.size()-1);
+	   if(top == null)
+	   {
+		   top = cards.get(cards.size()-2);
+	   }
+	   return top.getCardColor();
+   }
+   
    public boolean isDiscard(Card card)
    {
 	   Card top = cards.get(cards.size() -1);
