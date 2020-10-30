@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.ArrayList;
 import UNOset.server.RoundData;
 
-public class Montecorlo 
+public class Montecorlo2
 {
 	Deck deck;
 	int playerNum;
@@ -14,21 +14,23 @@ public class Montecorlo
 	CardList list = new CardList();
 	int turnbase;
 	Card topcard;
+	HandPredict[] hpre;
 	
-	public Montecorlo(DisCard dis, Hand myhand,int plyerNum, int num, int turnbase)
+	public Montecorlo2(DisCard dis, Hand myhand,int plyerNum, int num, int turnbase,HandPredict[] hpre)
 	{
 		this.myhand = new Hand();
 		this.myhand.handin(myhand.handout());
 		String str = dis.getTopName();
-		System.out.println(str+ "1");
+		//System.out.println(str+ "1");
 		CardList list = new CardList();
 		Card c = list.makeCard(str);
-		System.out.println(c.getCardName()+ "2");
+		//System.out.println(c.getCardName()+ "2");
 		this.topcard = c;
 		this.playerNum = plyerNum;
 		this.num = num;
 		this.handNum = new int[playerNum];
 		this.turnbase = turnbase;
+		this.hpre = hpre;
 		ArrayList<Card> temp = myhand.handout();
 		this.deck = new Deck();
 		deck.deckMake();
@@ -63,7 +65,7 @@ public class Montecorlo
 
 	public Card cal() //可能手を作成　run()でシュミ
 	{
-		int count = 400;
+		int count = 1000;
 		String[] co = {"b","g","y","r"};
 		Card bestcard  = null;
 		RoundData best = new RoundData();
@@ -89,7 +91,7 @@ public class Montecorlo
 					for(int j = 0;j < 4;j++)
 					{
 						((WildCard) card).changeColor(co[j]);
-						System.out.println(card.getCardName());
+						//System.out.println(card.getCardName());
 						RoundData tdata = new RoundData();
 						tdata.score = new int[2];
 						for(int k = 0;k < count;k++)
@@ -112,7 +114,7 @@ public class Montecorlo
 				}else
 				{
 					RoundData tdata = new RoundData();
-					System.out.println(card.getCardName() + "d");
+					//System.out.println(card.getCardName() + "d");
 					tdata.score = new int[2];
 					for(int j = 0;j < count;j++)
 					{
@@ -133,7 +135,7 @@ public class Montecorlo
 				}
 			}
 		}
-		System.out.println(bestcard.getCardName()+ "best");
+		//System.out.println(bestcard.getCardName()+ "best");
 		return bestcard;
 	}
 	
@@ -253,7 +255,7 @@ public class Montecorlo
 		while(true)
 		{			
 			limit ++;
-			if(limit == 800)
+			if(limit == 1000)
 			{
 				result = new RoundData();
 				result.score = new int[2];
@@ -261,7 +263,7 @@ public class Montecorlo
 				result.score[1] = 0;
 				//result.score[2] = 0;
 				//result.score[3] = 0;
-				System.out.println("limited out!!!");
+				//System.out.println("limited out!!!");
 				return result;
 			}
 			/*ここにターンの処理*/
@@ -488,3 +490,4 @@ public class Montecorlo
 	}
 	
 }
+

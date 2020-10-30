@@ -99,6 +99,23 @@ public class GameRun
 				{
 					server.sendMessage(turn, "play Dcard? y/n");
 					String s = server.catchMessage(turn);
+					if(s.equals("hand"))
+					{
+						int a = hand[0].getNum();
+						int b = hand[1].getNum();
+						//int c = hand[2].getNum();
+						//int d = hand[3].getNum();
+						server.sendMessage(turn,String.valueOf(a));
+						server.sendMessage(turn,String.valueOf(b));
+						//server.sendMessage(turn,String.valueOf(c));
+						//server.sendMessage(turn,String.valueOf(d));
+						
+						a = drawcount;
+						server.sendMessage(turn, String.valueOf(a));
+						server.sendMessage(turn, String.valueOf(turnbase));
+						server.sendMessage(turn, "play Dcard? y/n");
+						s = server.catchMessage(turn);
+					}
 					if(s.matches(".*y.*")) //Dカードを使う
 					{
 						while(true)

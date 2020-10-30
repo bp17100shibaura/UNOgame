@@ -106,6 +106,12 @@ public class Deck {
 		}
 	}
 	
+	public void backCard(Card card)
+	{
+		deck.add(card);
+		this.shuffle();
+	}
+	
 	public int getDeckNum()
 	{
 		return deck.size();

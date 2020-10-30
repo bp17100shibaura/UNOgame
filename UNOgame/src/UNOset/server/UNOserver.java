@@ -14,10 +14,10 @@ public class UNOserver
 		//int a = Integer.parseInt(args[0]);
 		//int b = Integer.parseInt(args[1]);
 		
-		int a = 555;
-		int b = 666;
-		//int c = 777;
-		//int d = 888;
+		int a = 2500;
+		int b = 3000;
+		//int c = 3500;
+		//int d = 4000;
 		
 		//TCPserver‚Æ‚ÌÚ‘±
 	    TCPserver server = new TCPserver(playerNum);

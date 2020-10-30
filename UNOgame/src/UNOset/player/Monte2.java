@@ -6,14 +6,14 @@ import GameSet.GamePlayer;
 import UNOset.utils.*;
 import UNOset.player.tactics.*;
 
-public class Monte 
+public class Monte2 
 {
 	/*ランダムをコピーしただけ*/
 	/*相手の手札数とターン移行状況はサーバーからとれるよ*/
 	public static void main(String[] args) 
 	{
 		//int num = Integer.parseInt(args[0]);
-		int num = 666;
+		int num = 2500;
 	    GamePlayer player = new GamePlayer();
 	    if(0 == player.playerSet(num))
 	    {
@@ -32,11 +32,6 @@ public class Monte
 		int base;
 		CardList list = new CardList();
 		Card card;
-		HandPredict hpre[] = new HandPredict[2];
-		for(int i = 0;i < playerNum;i++)
-		{
-			hpre[i] = new HandPredict(i);
-		}
 		Reader server = new Reader(write,read);
 		String[] co = new String[4];
 		co[0] = "r";
@@ -51,6 +46,11 @@ public class Monte
 			System.out.println(str);
 			str = read.readLine();
 			pnum = Integer.parseInt(str);
+			HandPredict hpre[] = new HandPredict[playerNum];
+			for(int i = 0;i < playerNum;i++)
+			{
+				hpre[i] = new HandPredict(i+1);
+			}
 			System.out.println("you are player " + pnum);
 			System.out.println("game start!");
 			
@@ -62,10 +62,14 @@ public class Monte
 			   /*ラウンドの準備*/
 				Hand hand = new Hand();
 				DisCard discard = new DisCard();
+				for(int i = 0;i < playerNum;i++)
+				{
+					hpre[i].reset();
+				}
 				server.read();
 				for(int i = 0;i < 7;i++)
 				{
-					str = server.read();
+					str = server.sread();
 					card = list.makeCard(str);
 					hand.getCard(card);
 				}
@@ -74,24 +78,26 @@ public class Monte
 				str = server.read();
 				card = list.makeCard(str);
 				discard.discard(card);
+				
+				
 			   /*ラウンド*/
 				while(true)
 				{
-					str = server.read();
+					str = server.sread();
 					if(str.matches(".*yourturn.*"))//自ターン
 					{
-					   server.read();
-					   server.read();
+					   server.sread();
+					   server.sread();
 					   server.write("ok");
 					   
-					   str = server.read();
+					   str = server.sread();
 					   if(str.matches(".*stack card.*")) //ドロー2系あり
 					   {
-						   server.read();
-						   str = server.read();
+						   server.sread();
+						   str = server.sread();
 						   if(str.matches(".*draw card.*")) //カードを引く
 						   {
-							   str = server.read();
+							   str = server.sread();
 							   int cnum = Integer.parseInt(str);
 							   for(int i = 0;i < cnum;i++)
 							   {
@@ -108,9 +114,9 @@ public class Monte
 								   str = server.read();
 								   hdata[i] = Integer.parseInt(str);
 							   }
-							   str = server.read();
+							   str = server.sread();
 							   int dCount = Integer.parseInt(str);
-							   str = server.read();
+							   str = server.sread();
 							   base = Integer.parseInt(str);
 							   
 							   DMontecorlo dmonte = new DMontecorlo(discard, hand, playerNum, pnum, base, dCount,hpre);
@@ -128,7 +134,7 @@ public class Monte
 								   }
 								   Card out = card;
 								   server.write(out.getCardName());
-								   server.read();
+								   server.sread();
 								   hand.crean();
 								   hand.disCard(out.getCardName());
 								   
@@ -136,23 +142,24 @@ public class Monte
 								   {
 									   String color = col;
 									   server.write(color);
-									   str = server.read();
+									   str = server.sread();
 									   ((WildCard) out).changeColor(color);
 								   }else
 								   {
-									   server.read();
+									   server.sread();
 								   }
 								   discard.discard(out);
+								   server.sread();
 							   }
 							   else //ドロー系を重ねない
 							   {
 								   server.write("n");
-								   server.read();
-								   str = server.read();
+								   server.sread();
+								   str = server.sread();
 								   int cnum = Integer.parseInt(str);
 								   for(int i = 0;i < cnum;i++)
 								   {
-									   str = server.read();
+									   str = server.sread();
 									   card = list.makeCard(str);
 									   hand.getCard(card);
 								   }
@@ -162,7 +169,7 @@ public class Monte
 					   else //通常
 					   {
 						   server.write("turnbase");
-						   str = server.read();
+						   str = server.sread();
 						   base = Integer.parseInt(str);
 						   
 						   while(true)
@@ -172,8 +179,8 @@ public class Monte
 							   if(!hand.canDiscard(card))
 							   {
 								   server.write("command");
-								   server.read();
-								   str = server.read();
+								   server.sread();
+								   str = server.sread();
 								   card = list.makeCard(str);
 								   hand.getCard(card);
 							   }
@@ -182,7 +189,7 @@ public class Monte
 								   server.write("hand");
 								   for(int i = 0;i < 2;i++) //実験用
 								   {
-									   str = server.read();
+									   str = server.sread();
 									   hdata[i] = Integer.parseInt(str);
 								   }
 								   server.write("card");
@@ -190,19 +197,19 @@ public class Monte
 							   }
 						   }
 						   
-						   System.out.println("which discard? (num)");
-						   for(int i = 0;i < hand.getNum();i++)
+						   //System.out.println("which discard? (num)");
+						   /*for(int i = 0;i < hand.getNum();i++)
 						   {
 							   card = hand.cardOut(i);
 							   System.out.println(i + card.getCardName());
-						   }
+						   }*/
 						   String col;
 						   while(true)
 						   {
 							   /*ここをモンテカルロで*/
-							   Montecorlo monte = new Montecorlo(discard, hand, playerNum, pnum, base);
-							   monte.setHand(hdata);
-							   card = monte.cal();
+							   Montecorlo2 monte2 = new Montecorlo2(discard, hand, playerNum, pnum, base,hpre);
+							   monte2.setHand(hdata);
+							   card = monte2.cal();
 							   if(true)
 							   {
 								   col = card.getCardColor();
@@ -216,8 +223,8 @@ public class Monte
 								   break;
 							   }
 						   }
-						   server.read();
-						   server.read();
+						   server.sread();
+						   server.sread();
 						   hand.crean();
 						   card = hand.disCard(str);
 						   
@@ -226,7 +233,7 @@ public class Monte
 							   while(true)
 							   {
 								   String color = col;
-								   System.out.println(col);
+								   //System.out.println(col);
 								   server.write(color);
 								   str = server.sread();
 								   if(str.matches(".*OK.*"))
@@ -244,11 +251,11 @@ public class Monte
 						   
 						   discard.discard(card);
 					   }
-					   server.read();
-					   server.read();
-					   server.read();
+					   server.sread();
+					   server.sread();
+					   server.sread();
 					   
-					   str = server.read();
+					   str = server.sread();
 					   if(str.matches(".*round end.*"))
 					   {
 						   break;
@@ -256,28 +263,33 @@ public class Monte
 					}
 					else //相手のターン
 					{
-					   str = server.read();
-					   if(str.matches(".*stack draw.*"))
-					   {
-						 server.read();  
-					   }else
-					   {
-						   while(str.matches(".*one draw.*"))
-						   {
-							   str = server.read();
-						   }
+						String temp = str.substring(7, 8);
+						int turn = Integer.parseInt(temp);
+						
+						str = server.sread();
+						if(str.matches(".*stack draw.*"))
+						{
+							hpre[turn-1].drawcount();
+							server.sread();
+						}else
+						{
+							while(str.matches(".*one draw.*"))
+							{	
+								str = server.sread();
+								hpre[turn-1].passCard(discard.getTopColor());
+							}
 						   
-						   str = server.read();
-						   card = list.makeCard(str);
-						   discard.discard(card);
-					   }
-					   server.read();
-					   str = server.read();
-					   if(str.matches("round end"))
-					   {
-						   System.out.println("round "+ (roundcount+1) + " end");
-						   break;
-					   }
+							str = server.sread();
+							card = list.makeCard(str);
+							discard.discard(card);
+						}
+						server.sread();
+						str = server.sread();
+						if(str.matches("round end"))
+						{
+							//System.out.println("round "+ (roundcount+1) + " end");
+							break;
+						}
 					}
 				}
 				/*試合結果処理*/
