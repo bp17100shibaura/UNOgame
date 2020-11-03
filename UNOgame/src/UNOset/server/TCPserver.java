@@ -18,9 +18,9 @@ public class TCPserver
 	}
 
 	//playerと接続
-	boolean connect(int a, int b)
+	boolean connect(int a, int b, int c, int d)
 	{
-		if(0 == server.playerSet(a, b))
+		if(0 == server.playerSet(a, b, c, d))
 		{
 			return false;
 		}
@@ -68,6 +68,23 @@ public class TCPserver
 			write[i].println(str);
 		}
 		System.out.println(str);
+	}public TCPserver() {
+		// TODO 自動生成されたコンストラクター・スタブ
+	}
+	
+	//送信
+	void sendSMessage(int player,String str)
+	{
+		write[player -1].println(str);
+	}
+	
+	//全員に送信
+	void sendSAllMessage(String str)
+	{
+		for(int i = 0;i < playerNum;i++)
+		{
+			write[i].println(str);
+		}
 	}
 	
 	String catchMessage(int player)
