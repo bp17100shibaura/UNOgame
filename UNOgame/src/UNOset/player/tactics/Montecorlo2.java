@@ -42,7 +42,7 @@ public class Montecorlo2
 	
 	public void setHand(int[] data)
 	{
-		for(int i = 0;i < 2;i++)
+		for(int i = 0;i < playerNum;i++)
 		{
 			handNum[i] = data[i];
 		}
@@ -93,16 +93,14 @@ public class Montecorlo2
 						((WildCard) card).changeColor(co[j]);
 						//System.out.println(card.getCardName());
 						RoundData tdata = new RoundData();
-						tdata.score = new int[2];
+						tdata.score = new int[4];
 						for(int k = 0;k < count;k++)
 						{
-							//System.out.println(j);
 							temp = run(card);
 							tdata.score[0] += temp.score[0];
 							tdata.score[1] += temp.score[1];
-							//tdata.score[2] += temp.score[2];
-							//tdata.score[3] += temp.score[3];
-							//System.out.println("nnnn");
+							tdata.score[2] += temp.score[2];
+							tdata.score[3] += temp.score[3];
 						}
 						if(eval(best,tdata,count) || bestcard == null)
 						{
@@ -115,16 +113,14 @@ public class Montecorlo2
 				{
 					RoundData tdata = new RoundData();
 					//System.out.println(card.getCardName() + "d");
-					tdata.score = new int[2];
+					tdata.score = new int[4];
 					for(int j = 0;j < count;j++)
 					{
-						//System.out.println(j);
 						temp = run(card);
 						tdata.score[0] += temp.score[0];
 						tdata.score[1] += temp.score[1];
-						//tdata.score[2] += temp.score[2];
-						//tdata.score[3] += temp.score[3];
-						//System.out.println("nnnn");
+						tdata.score[2] += temp.score[2];
+						tdata.score[3] += temp.score[3];
 					}
 					if(eval(best,tdata,count) || bestcard == null)
 					{
@@ -186,7 +182,7 @@ public class Montecorlo2
 		DisCard tdis = new DisCard();
 		String str = this.topcard.getCardName();
 		tdis.discard(list.makeCard(str));
-		Hand[] thand = new Hand[2];
+		Hand[] thand = new Hand[4];
 		Random rand = new Random();
 		for(int i = 0;i < playerNum;i++)
 		{
@@ -255,14 +251,14 @@ public class Montecorlo2
 		while(true)
 		{			
 			limit ++;
-			if(limit == 1000)
+			if(limit == 200)
 			{
 				result = new RoundData();
-				result.score = new int[2];
+				result.score = new int[4];
 				result.score[0] = 0;
 				result.score[1] = 0;
-				//result.score[2] = 0;
-				//result.score[3] = 0;
+				result.score[2] = 0;
+				result.score[3] = 0;
 				//System.out.println("limited out!!!");
 				return result;
 			}
@@ -273,13 +269,8 @@ public class Montecorlo2
 			{
 				str = tdis.getTopName();
 				card = list.makeCard(str);
-				if(thand[turn-1].isdrawCard() && thand[turn-1].dcanDiscard(card)) //Dカードを持ってるか
+				if(thand[turn-1].dcanDiscard(card)) //Dカードを持ってるか
 				{
-					/*for(int i = 0;i < thand[turn-1].getNum();i++)
-					{
-						card = thand[turn -1].cardOut(i);
-						//System.out.println(card.getCardName());
-					}*/
 					int r = rand.nextInt(2);
 					if(r == 0) //Dカードを使う
 					{
@@ -451,19 +442,9 @@ public class Montecorlo2
 	
 	private int turncount(int turn, int turnbase,int skipcount)
 	{
-		if(skipcount == 0)
-		{
-			if(turn == 2)
-			{
-				turn = 1;
-			}
-			else 
-			{
-				turn = 2;
-			}
-		}
-		/*turn += turnbase;
+		turn += turnbase;
 		turn += turnbase * skipcount;
+
 		if(turn == 0)
 		{
 			turn = playerNum;
@@ -475,16 +456,12 @@ public class Montecorlo2
 		else if(turn < 0)
 		{
 			turn = playerNum + turn;
-		}*/
-		
-		/*if(turn == 1)
-		{
-			turn = 2;
 		}
-		else
+		
+		if(turn < 0)
 		{
-			turn = 1;
-		}*/
+			turn = playerNum + turn;
+		}
 		
 		return turn;
 	}

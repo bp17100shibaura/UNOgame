@@ -71,6 +71,7 @@ public class Hand
 		}
 	}
 	
+	//捨て札のトップ入力すると出せるカードがあるか返す
 	public boolean canDiscard(Card card)
 	{
 		Card h;
@@ -116,6 +117,7 @@ public class Hand
 		return out;
 	}
 	
+	//上のをDカードに限定したもの
 	public boolean dcanDiscard(Card card)
 	{
 		Card h;
@@ -143,6 +145,7 @@ public class Hand
 		return out;
 	}
 	
+	//手札バグの修正
 	public void cardFix()
 	{
 		int n = this.hands.size();
@@ -159,7 +162,7 @@ public class Hand
 		}
 	}
 	
-	
+	//手札の総点数を計算
 	public int result()
 	{
 		int result = 0;
@@ -183,6 +186,7 @@ public class Hand
 		return result;
 	}
 	
+	//Dカードを持っているか
 	public boolean isdrawCard()
 	{
 		for(int i = 0;i < this.getNum();i++)
@@ -196,6 +200,7 @@ public class Hand
 		return false;
 	}
 	
+	//Dカードの枚数
 	public int drawnum()
 	{
 		int num = 0;
@@ -210,6 +215,7 @@ public class Hand
 		return num;
 	}
 	
+	//入力された色の数を返す
 	public int colors(String co)
 	{
 		int num = 0;

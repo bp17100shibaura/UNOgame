@@ -9,22 +9,22 @@ import java.net.ServerSocket;
 public class GameServer
 {
 	
-	private ServerSocket[] svSock = new ServerSocket[2]; //テスト用に2実際は4
-    private Socket[] sock = new Socket[2]; //上と同じ
+	private ServerSocket[] svSock = new ServerSocket[4];
+    private Socket[] sock = new Socket[4];
 	
 
-	public int playerSet(int a, int b)
+	public int playerSet(int a, int b,int c,int d)
 	{
 		try
 		{   
 			svSock[0] = new ServerSocket(a);
 		    svSock[1] = new ServerSocket(b);
-		    //svSock[2] = new ServerSocket(c);
-		    //svSock[3] = new ServerSocket(d);
+		    svSock[2] = new ServerSocket(c);
+		    svSock[3] = new ServerSocket(d);
 		    sock[0] = svSock[0].accept();
 		    sock[1] = svSock[1].accept();
-		    //sock[2] = svSock[2].accept();
-		    //sock[3] = svSock[3].accept();
+		    sock[2] = svSock[2].accept();
+		    sock[3] = svSock[3].accept();
 		}catch(IOException e)
 		{
 			e.printStackTrace();
@@ -38,7 +38,7 @@ public class GameServer
 	{
 		try
 		{
-		    for(int i = 0;i < 2;i++)//テスト用に2
+		    for(int i = 0;i < 4;i++)
 		    {
 			    svSock[i].close();
 		    }

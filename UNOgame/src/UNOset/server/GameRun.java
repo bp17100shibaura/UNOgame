@@ -77,9 +77,10 @@ public class GameRun
 			{
 				if(i+1 != turn)
 				{
-					server.sendMessage(i+1,"player "+ turn+ "'s turn");
+					server.sendSMessage(i+1,"player "+ turn+ "'s turn");
 				}
 			}
+			System.out.println("player "+ turn + "'s turn");
 			
 			/*ここにターンの処理*/
 			String str = "";
@@ -95,7 +96,7 @@ public class GameRun
 				server.sendMessage(turn, "you draw "+ drawcount + " card");
 				str = disCard.getTopName();
 				card = list.makeCard(str);
-				if(hand[turn-1].isdrawCard() && hand[turn-1].canDiscard(card)) //Dカードを持ってるか
+				if(hand[turn-1].dcanDiscard(card)) //出せるDカードを持ってるか
 				{
 					server.sendMessage(turn, "play Dcard? y/n");
 					String s = server.catchMessage(turn);
@@ -103,12 +104,12 @@ public class GameRun
 					{
 						int a = hand[0].getNum();
 						int b = hand[1].getNum();
-						//int c = hand[2].getNum();
-						//int d = hand[3].getNum();
+						int c = hand[2].getNum();
+						int d = hand[3].getNum();
 						server.sendMessage(turn,String.valueOf(a));
 						server.sendMessage(turn,String.valueOf(b));
-						//server.sendMessage(turn,String.valueOf(c));
-						//server.sendMessage(turn,String.valueOf(d));
+						server.sendMessage(turn,String.valueOf(c));
+						server.sendMessage(turn,String.valueOf(d));
 						
 						a = drawcount;
 						server.sendMessage(turn, String.valueOf(a));
@@ -237,12 +238,12 @@ public class GameRun
 					{
 						int a = hand[0].getNum();
 						int b = hand[1].getNum();
-						//int c = hand[2].getNum();
-						//int d = hand[3].getNum();
+						int c = hand[2].getNum();
+						int d = hand[3].getNum();
 						server.sendMessage(turn,String.valueOf(a));
 						server.sendMessage(turn,String.valueOf(b));
-						//server.sendMessage(turn,String.valueOf(c));
-						//server.sendMessage(turn,String.valueOf(d));
+						server.sendMessage(turn,String.valueOf(c));
+						server.sendMessage(turn,String.valueOf(d));
 					}
 					else
 					{
@@ -256,6 +257,7 @@ public class GameRun
 					if(-1 == hand[turn-1].serchCard(str))
 					{
 						server.sendMessage(turn, "have'nt");
+						return result;
 					}
 					else if(!disCard.isDiscard(list.makeCard(str)))
 					{
@@ -335,20 +337,9 @@ public class GameRun
 	
 	private int turncount(int turn, int turnbase,int skipcount)
 	{
-		if(skipcount == 0) 
-		{
-			if(turn == 1)
-			{
-				turn = 2;
-			}
-			else
-			{
-				turn = 1;
-			}
-		}
-			/*turn += turnbase;
-		
+	    turn += turnbase;
 		turn += turnbase * skipcount;
+		
 		if(turn == 0)
 		{
 			turn = playerNum;
@@ -360,16 +351,12 @@ public class GameRun
 		else if(turn < 0)
 		{
 			turn = playerNum + turn;
-		}*/
-		
-		/*if(turn == 1)
-		{
-			turn = 2;
 		}
-		else
+		
+		if(turn < 0)
 		{
-			turn = 1;
-		}*/
+			turn = playerNum + turn;
+		}
 		
 		return turn;
 	}
@@ -384,6 +371,12 @@ public class GameRun
 			disCard.delete();
 			card = deck.draw1Card();
 		}
+		
+		if(card instanceof WildCard)
+		{
+			((WildCard) card).changeColor("w");
+		}
+		
 		hand[turn-1].getCard(card);
 		return card;
 	}
