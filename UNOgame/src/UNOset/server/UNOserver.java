@@ -32,53 +32,62 @@ public class UNOserver
 	    }
 	    
 	    int gameNum = 5;
-	    
-	    while(gameNum > 0)
-	    {
-	    	//試合数
-	    	int roundNum = 5;
-	    	int roundCount = 0;
-	    
-	    	int[][] scoreData = new int[playerNum][roundNum];
-	    
-	    	for(int i = 0;i < playerNum;i++)
+	    try 
+	    {	
+	    	//FileWriter fw = new FileWriter("C:\\Users\\ken\\Desktop\\test.csv", true);
+	    	FileWriter fw = new FileWriter(".\\data.csv", true);
+	    	PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+    	
+	    	while(gameNum > 0)
 	    	{
-	    		server.sendMessage(i+1,"player");
-	    		server.sendMessage(i+1, Integer.toString(i+1));
-	    	}
+	    		//試合数
+	    		int roundNum = 5;
+	    		int roundCount = 0;
 	    
-	    	//マッチの管理
-	    	while(true)
-	    	{
+	    		int[][] scoreData = new int[playerNum][roundNum];
+	    		int[] totalScore = new int[playerNum];
+	    
+	    		for(int i = 0;i < playerNum;i++)
+	    		{
+	    			server.sendMessage(i+1,"player");
+	    			server.sendMessage(i+1, Integer.toString(i+1));
+	    		}
+	    
+	    		//マッチの管理
+	    		while(true)
+	    		{
 			
-	    		//1ラウンド
-	    		server.sendAllMessage("Round"+roundCount);
-	    		GameRun round = new GameRun(playerNum,server);
-				RoundData data = round.match();
-				for(int i = 0;i < playerNum;i++)
-				{
-					server.sendMessage(i+1,"winner player"+ data.winner);
-					server.sendMessage(i+1, "your score");
-					server.sendMessage(i+1, "" + data.score[i]);
-					scoreData[i][roundCount] = data.score[i];
-				}
-			
-				roundCount++;
-				if(roundCount == roundNum)
-				{
-					break;
-				}
-	    	}
+	    			//1ラウンド
+	    			server.sendAllMessage("Round"+roundCount);
+	    			GameRun round = new GameRun(playerNum,server);
+	    			RoundData data = round.match();
+	    			for(int i = 0;i < playerNum;i++)
+	    			{
+	    				server.sendMessage(i+1,"winner player"+ data.winner);
+						server.sendMessage(i+1, "your score");
+						server.sendMessage(i+1, "" + data.score[i]);
+						scoreData[i][roundCount] = data.score[i];
+						totalScore[i] += data.score[i];
+	    			}
+	    			
+	    			server.sendAllMessage("total score");
+	    			server.sendAllMessage(Integer.toString(totalScore[0]));
+	    			server.sendAllMessage(Integer.toString(totalScore[1]));
+	    			server.sendAllMessage(Integer.toString(totalScore[2]));
+	    			server.sendAllMessage(Integer.toString(totalScore[3]));
+	    			
+	    			roundCount++;
+	    			if(roundCount == roundNum)
+	    			{
+	    				break;
+	    			}
+	    		}
 
-	    	server.sendAllMessage("Match finish");
-	    	server.sendAllMessage("final score");
-	    	int topS = -1000;
-	    	int topP = 0;
-	    	try 
-	    	{	
-	    		FileWriter fw = new FileWriter("C:\\Users\\ken\\Desktop\\test.csv", true);
-	    		//FileWriter fw = new FileWriter(".\\Data\\data.csv", true);
-	    		PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+	    		server.sendAllMessage("Match finish");
+	    		server.sendAllMessage("final score");
+	    		int topS = -1000;
+	    		int topP = 0;
+
 	    		//pw.print(",");
 	    		/*pw.print("R1");
 	    		pw.print(",");
@@ -113,6 +122,7 @@ public class UNOserver
 	    				topP = i + 1;
 	    			}
 	    		}*/
+	    		
 	    		int temp[] = new int[4];
 	    		for(int i = 0;i < playerNum;i++)
 	    		{
@@ -151,23 +161,24 @@ public class UNOserver
 	    			pw.print(rank[i]);
 	    			pw.print(",");
 	    		}
-	    		
-	    		pw.println();
-	    		
-	    		pw.close();
-	    	}catch (IOException ex) 
-	    	{
-	    		ex.printStackTrace();
-	    	}
-	    	server.sendAllMessage("winner player"+ topP);
-	    	server.sendAllMessage("winner score "+ topS);
+
+	    		server.sendAllMessage("winner player"+ topP);
+	    		server.sendAllMessage("winner score "+ topS);
 		
-	    	server.sendAllMessage("GAME END");
+	    		server.sendAllMessage("GAME END");
 	    	
-	    	gameNum = gameNum - 1;
-	    }
-		
-		server.close();
+	    		gameNum = gameNum - 1;
+	    	}
+	    	
+    		pw.println();
+    		
+    		pw.close();
+    		fw.close();
+	    }catch (IOException ex) 
+	    {
+			ex.printStackTrace();
+		}
+	    server.close();
 		server.gameEnd();
 		System.out.println("sEND");
 	}

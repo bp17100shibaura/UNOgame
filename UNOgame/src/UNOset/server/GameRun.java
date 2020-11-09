@@ -46,7 +46,7 @@ public class GameRun
 			    {
 				    System.out.println("error A");
 			    }
-			    System.out.println(temp.getCardName());
+			    //System.out.println(temp.getCardName());
 			    hand[i].getCard(temp);
 			    server.sendMessage(i+1,temp.getCardName());
 			    
@@ -80,7 +80,7 @@ public class GameRun
 					server.sendSMessage(i+1,"player "+ turn+ "'s turn");
 				}
 			}
-			System.out.println("player "+ turn + "'s turn");
+			//System.out.println("player "+ turn + "'s turn");
 			
 			/*‚±‚±‚Éƒ^[ƒ“‚Ìˆ—*/
 			String str = "";
@@ -221,7 +221,7 @@ public class GameRun
 					str = server.catchMessage(turn);
 					if(str.equals("command"))
 					{
-						System.out.println("command");
+						//System.out.println("command");
 						card = command(turn);
 						server.sendAllMessage("one draw");
 						server.sendMessage(turn, card.getCardName());

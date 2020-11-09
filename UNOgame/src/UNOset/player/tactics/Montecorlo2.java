@@ -15,6 +15,8 @@ public class Montecorlo2
 	int turnbase;
 	Card topcard;
 	HandPredict[] hpre;
+	Evaluation evaluation;
+	int tact = 1; //1:点数 2:順位 3:自分以外の一位との差
 	
 	public Montecorlo2(DisCard dis, Hand myhand,int plyerNum, int num, int turnbase,HandPredict[] hpre)
 	{
@@ -31,6 +33,7 @@ public class Montecorlo2
 		this.handNum = new int[playerNum];
 		this.turnbase = turnbase;
 		this.hpre = hpre;
+		this.evaluation = new Evaluation(num);
 		ArrayList<Card> temp = myhand.handout();
 		this.deck = new Deck();
 		deck.deckMake();
@@ -49,23 +52,25 @@ public class Montecorlo2
 		handNum[this.num-1] = this.myhand.getNum();
 	}
 	
-	public boolean eval(RoundData best,RoundData cor,int count) //どっちの手が優れているか調べる 作る
+	public boolean eval(RoundData best,RoundData cor) //どっちの手が優れているか調べる
 	{
-		int a = best.score[num-1];
-		int b = cor.score[num-1];
-		if(a < b)
+		boolean ans = evaluation.eval(tact, best, cor);
+		return ans;
+	}
+	
+	public void setTact(int tact,int enemy)
+	{
+		this.tact = tact;
+		if(this.tact == 3 && enemy == -1)
 		{
-			return true;
+			this.tact = 1;
 		}
-		else
-		{
-			return false;
-		}
+		evaluation.setEnemy(enemy);
 	}
 
 	public Card cal() //可能手を作成　run()でシュミ
 	{
-		int count = 1000;
+		int count = 3000;
 		String[] co = {"b","g","y","r"};
 		Card bestcard  = null;
 		RoundData best = new RoundData();
@@ -102,7 +107,7 @@ public class Montecorlo2
 							tdata.score[2] += temp.score[2];
 							tdata.score[3] += temp.score[3];
 						}
-						if(eval(best,tdata,count) || bestcard == null)
+						if(eval(best,tdata) || bestcard == null)
 						{
 							best = tdata;
 							bestcard = card;
@@ -122,7 +127,7 @@ public class Montecorlo2
 						tdata.score[2] += temp.score[2];
 						tdata.score[3] += temp.score[3];
 					}
-					if(eval(best,tdata,count) || bestcard == null)
+					if(eval(best,tdata) || bestcard == null)
 					{
 						best = tdata;
 						bestcard = card;

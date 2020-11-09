@@ -33,7 +33,7 @@ public class RandomPlayer {
 				System.out.println("DUEL "+ (1001 - gameNum));
 				int roundNum = 5;
 				int playerNum = 4;
-				int pnum = 0;
+				//int pnum = 0;
 				int roundcount = 0;
 				CardList list = new CardList();
 				Card card;
@@ -48,9 +48,9 @@ public class RandomPlayer {
 				String str = read.readLine();
 				//System.out.println(str);
 				str = read.readLine();
-				pnum = Integer.parseInt(str);
-				System.out.println("you are player " + pnum);
-				System.out.println("game start!");
+				//pnum = Integer.parseInt(str);
+				//System.out.println("you are player " + pnum);
+				//System.out.println("game start!");
 			
 				while(true)
 				{
@@ -104,14 +104,6 @@ public class RandomPlayer {
 									if(r == 0) //ƒhƒ[Œn‚ğd‚Ë‚é
 									{
 										server.write("y");
-										for(int i = 0;i < hand.getNum();i++)
-										{
-											card = hand.cardOut(i);
-											if(card.isDrawcard())
-											{
-												//System.out.println(i + card.getCardName());
-											}
-										}
 										while(true)
 										{
 											int s = random.nextInt(hand.getNum());
@@ -255,7 +247,13 @@ public class RandomPlayer {
 					server.read();
 					server.read();
 					server.read();
-				
+			
+					server.sread();
+					server.sread();
+					server.sread();
+					server.sread();
+					server.sread();
+					
 					roundcount++;
 					if(roundcount == roundNum)
 					{
@@ -276,7 +274,7 @@ public class RandomPlayer {
 				server.read();
 				server.read();
 			
-				gameNum = gameNum - 1000;
+				gameNum = gameNum - 1;
 			}
 				
 			read.close();

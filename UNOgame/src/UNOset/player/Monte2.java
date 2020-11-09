@@ -11,7 +11,7 @@ public class Monte2
 
 	public static void main(String[] args) 
 	{
-		//int num = Integer.parseInt(args[0]);
+		int tac = Integer.parseInt(args[0]);
 		int num = 2500;
 	    GamePlayer player = new GamePlayer();
 	    if(0 == player.playerSet(num))
@@ -39,6 +39,9 @@ public class Monte2
 				int roundcount = 0;
 				int[] hdata = new int[4];
 				int base;
+				int[] score = new int[playerNum];
+				int[] rank = new int[playerNum];
+				int enemy = -1;
 				CardList list = new CardList();
 				Card card;
 				String[] co = new String[4];
@@ -57,8 +60,8 @@ public class Monte2
 				{
 					hpre[i] = new HandPredict(i+1);
 				}
-				System.out.println("you are player " + pnum);
-				System.out.println("game start!");
+				//System.out.println("you are player " + pnum);
+				//System.out.println("game start!");
 			
 				while(true)
 				{
@@ -126,6 +129,7 @@ public class Monte2
 									base = Integer.parseInt(str);
 							   
 									DMontecorlo dmonte = new DMontecorlo(discard, hand, playerNum, pnum, base, dCount,hpre);
+									dmonte.setTact(tac, enemy);
 									dmonte.setHand(hdata);
 									card = dmonte.cal();
 									
@@ -209,6 +213,7 @@ public class Monte2
 								{
 									/*‚±‚±‚ğƒ‚ƒ“ƒeƒJƒ‹ƒ‚Å*/
 									Montecorlo2 monte2 = new Montecorlo2(discard, hand, playerNum, pnum, base,hpre);
+									monte2.setTact(tac, enemy);
 									monte2.setHand(hdata);
 									card = monte2.cal();
 									if(true)
@@ -243,12 +248,8 @@ public class Monte2
 										}
 										else
 										{
-											for(int i = 0;i < hand.getNum();i++)
-											{
-												System.out.println(hand.cardOut(i));
-											}
 											System.out.println("monte col error");
-									   
+									        return ;
 										}
 									}
 								}
@@ -269,17 +270,7 @@ public class Monte2
 						{
 							int turn  = 0;
 							String temp = str.substring(7, 8);
-							//try 
-							//{
-								turn = Integer.parseInt(temp);
-							/*}catch(NumberFormatException e)
-							{
-								System.out.println("EX1:eroor");
-								System.out.println(str);
-								str = server.read();
-								temp = str.substring(7, 8);
-								turn = Integer.parseInt(temp);
-							}*/
+							turn = Integer.parseInt(temp);
 							
 							str = server.read();
 							if(str.matches(".*stack draw.*"))
@@ -312,6 +303,34 @@ public class Monte2
 					server.read();
 					server.read();
 				
+					server.sread();
+					score[0] = Integer.parseInt(server.sread());
+					score[1] = Integer.parseInt(server.sread());
+					score[2] = Integer.parseInt(server.sread());
+					score[3] = Integer.parseInt(server.sread());
+					
+					for(int i = 0;i < playerNum ; i++)
+		    		{
+		    			int count = 0;
+		    			for(int j = 0;j < playerNum ; j++)
+		    			{
+		    				if(score[i] < score[j])
+		    				{
+		    					count++;
+		    				}
+		    			}
+		    			rank[count] = i;
+		    		}
+					
+					if(rank[0] == 0)
+					{
+						enemy = rank[1];
+					}
+					else
+					{
+						enemy = rank[0];
+					}
+					
 					roundcount++;
 					if(roundcount == roundNum)
 					{
@@ -331,7 +350,7 @@ public class Monte2
 				server.read();
 				server.read();
 				server.read();
-			
+				
 				gameNum = gameNum - 1;
 			}
 			read.close();
