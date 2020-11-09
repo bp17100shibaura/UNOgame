@@ -57,7 +57,7 @@ public class TCPserver
 	void sendMessage(int player,String str)
 	{
 		write[player -1].println(str);
-		System.out.println(str);
+		//System.out.println(str);
 	}
 	
 	//全員に送信
@@ -67,9 +67,7 @@ public class TCPserver
 		{
 			write[i].println(str);
 		}
-		System.out.println(str);
-	}public TCPserver() {
-		// TODO 自動生成されたコンストラクター・スタブ
+		//System.out.println(str);
 	}
 	
 	//送信
@@ -97,7 +95,7 @@ public class TCPserver
 		{
 			e.printStackTrace();
 		}
-		System.out.println(str);
+		//System.out.println(str);
 		return str;
 	}
 	

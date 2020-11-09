@@ -20,7 +20,7 @@ public class Reader
 		try
 		{
 			str = read.readLine();
-			System.out.println(str);
+			//System.out.println(str);
 		}catch(IOException e)
 		{
 			e.printStackTrace();
@@ -34,6 +34,7 @@ public class Reader
 		try
 		{
 			str = read.readLine();
+			//System.out.println(str);
 		}catch(IOException e)
 		{
 			e.printStackTrace();

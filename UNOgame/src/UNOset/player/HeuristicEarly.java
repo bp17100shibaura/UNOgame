@@ -36,17 +36,17 @@ public class HeuristicEarly {
 		PrintWriter write = player.getWriter();
 		Reader server = new Reader(write,read);
 		
-		int gamenum = 5; //試合回数
+		int gamenum = 1000; //試合回数
 
 		try 
 		{
 			while(gamenum > 0)
 			{
-				System.out.println("DUEL " + (6 - gamenum));
+				System.out.println("DUEL " + (1001 - gamenum));
 				int roundNum = 5; //ラウンド数
 				int playerNum = 4; //プレイヤー数
 				int roundcount = 0;
-				int pnum = 0;
+				//int pnum = 0;
 				CardList list = new CardList();
 				Card card;
 				Random random = new Random(257);
@@ -61,9 +61,9 @@ public class HeuristicEarly {
 				String str = read.readLine();
 				//System.out.println(str);
 				str = read.readLine();
-				pnum = Integer.parseInt(str);
-				System.out.println("you are player " + pnum);
-				System.out.println("game start!");
+				//pnum = Integer.parseInt(str);
+				//System.out.println("you are player " + pnum);
+				//System.out.println("game start!");
 			
 				while(true)
 				{
@@ -114,6 +114,7 @@ public class HeuristicEarly {
 								else //引くか選ぶ
 								{
 									int r = 0; //確定で変えすよ
+									
 									if(r == 0) //ドロー系を重ねる
 									{
 										server.write("y");
@@ -316,6 +317,12 @@ public class HeuristicEarly {
 					server.read();
 					server.read();
 					server.read();
+					
+					server.sread();
+					server.sread();
+					server.sread();
+					server.sread();
+					server.sread();
 				
 					roundcount++;
 					if(roundcount == roundNum)
@@ -323,7 +330,7 @@ public class HeuristicEarly {
 						break;
 					}
 				}
-				/*4試合の処理*/
+				/*試合の処理*/
 				server.read();
 				server.read();
 			
