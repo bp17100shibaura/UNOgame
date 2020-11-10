@@ -31,11 +31,11 @@ public class UNOserver
 	    	return;
 	    }
 	    
-	    int gameNum = 5;
+	    int gameNum = 50;
 	    try 
 	    {	
 	    	//FileWriter fw = new FileWriter("C:\\Users\\ken\\Desktop\\test.csv", true);
-	    	FileWriter fw = new FileWriter(".\\data.csv", true);
+	    	FileWriter fw = new FileWriter("/home/tslab/bp17100/Exper/src/test.csv", true);
 	    	PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
     	
 	    	while(gameNum > 0)
@@ -168,6 +168,8 @@ public class UNOserver
 	    		server.sendAllMessage("GAME END");
 	    	
 	    		gameNum = gameNum - 1;
+	    		
+	    		System.out.println(" 1:"+temp[0] + " 2:"+ temp[1] + " 3:" + temp[2] + " :4" +temp[3]);
 	    	}
 	    	
     		pw.println();

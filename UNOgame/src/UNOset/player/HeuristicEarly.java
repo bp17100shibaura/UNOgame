@@ -36,20 +36,20 @@ public class HeuristicEarly {
 		PrintWriter write = player.getWriter();
 		Reader server = new Reader(write,read);
 		
-		int gamenum = 1000; //試合回数
+		int gamenum = 50; //試合回数
 
 		try 
 		{
 			while(gamenum > 0)
 			{
-				System.out.println("DUEL " + (1001 - gamenum));
+				System.out.println("DUEL " + (51 - gamenum));
 				int roundNum = 5; //ラウンド数
 				int playerNum = 4; //プレイヤー数
 				int roundcount = 0;
 				//int pnum = 0;
 				CardList list = new CardList();
 				Card card;
-				Random random = new Random(257);
+				Random random = new Random();
 				String[] co = new String[4];
 				co[0] = "r";
 				co[1] = "g";

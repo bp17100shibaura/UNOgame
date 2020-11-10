@@ -24,13 +24,13 @@ public class RandomPlayer {
 		PrintWriter write = player.getWriter();
 		Reader server = new Reader(write,read);
 		
-		int gameNum = 1000;
+		int gameNum = 50;
 		
 		try
 		{
 			while(gameNum > 0)
 			{
-				System.out.println("DUEL "+ (1001 - gameNum));
+				System.out.println("DUEL "+ (51 - gameNum));
 				int roundNum = 5;
 				int playerNum = 4;
 				//int pnum = 0;
@@ -39,7 +39,7 @@ public class RandomPlayer {
 				Card card;
 				String[] co = new String[4];
 				co[0] = "r";
-				Random random = new Random(257);
+				Random random = new Random();
 				co[1] = "g";
 				co[2] = "b";
 				co[3] = "y";

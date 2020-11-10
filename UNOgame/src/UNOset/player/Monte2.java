@@ -26,13 +26,13 @@ public class Monte2
 		PrintWriter write = player.getWriter();
 		Reader server = new Reader(write,read);
 		
-		int gameNum = 5; //ŽŽ‡”
+		int gameNum = 50; //ŽŽ‡”
 		
 		try 
 		{
 			while(gameNum > 0)
 			{
-				System.out.println("DUEL "+ (6 - gameNum));
+				System.out.println("DUEL "+ (51 - gameNum));
 				int roundNum = 5;
 				int playerNum = 4;
 				int pnum = 0;
