@@ -11,8 +11,15 @@ public class Monte2
 
 	public static void main(String[] args) 
 	{
+		//int ct = Integer.parseInt(args[0]);
 		int tac = Integer.parseInt(args[0]);
-		int num = 2500;
+		int gn = Integer.parseInt(args[1]);
+		int line = Integer.parseInt(args[0]);
+		int enemy = Integer.parseInt(args[0]);
+		int ct = 2500;
+		//int tac = 1;
+		
+		int num = 5010;
 	    GamePlayer player = new GamePlayer();
 	    if(0 == player.playerSet(num))
 	    {
@@ -26,13 +33,13 @@ public class Monte2
 		PrintWriter write = player.getWriter();
 		Reader server = new Reader(write,read);
 		
-		int gameNum = 5; //‡”
+		int gameNum = gn; //‡”
 		
 		try 
 		{
 			while(gameNum > 0)
 			{
-				System.out.println("DUEL "+ (6 - gameNum));
+				System.out.println("DUEL "+ ((gn + 1) - gameNum));
 				int roundNum = 5;
 				int playerNum = 4;
 				int pnum = 0;
@@ -41,7 +48,6 @@ public class Monte2
 				int base;
 				int[] score = new int[playerNum];
 				int[] rank = new int[playerNum];
-				int enemy = -1;
 				CardList list = new CardList();
 				Card card;
 				String[] co = new String[4];
@@ -58,7 +64,7 @@ public class Monte2
 				HandPredict hpre[] = new HandPredict[playerNum];
 				for(int i = 0;i < playerNum;i++)
 				{
-					hpre[i] = new HandPredict(i+1);
+					hpre[i] = new HandPredict((i+1),line);
 				}
 				//System.out.println("you are player " + pnum);
 				//System.out.println("game start!");
@@ -128,8 +134,18 @@ public class Monte2
 									str = server.sread();
 									base = Integer.parseInt(str);
 							   
+									int temp = discard.getNum();
+									for(int i = 0;i < playerNum ;i++)
+									{
+										temp += hdata[i];
+									}
+									if(temp > 108)
+									{
+										temp = temp - 108;
+										discard.fix(temp);
+									}
 									DMontecorlo dmonte = new DMontecorlo(discard, hand, playerNum, pnum, base, dCount,hpre);
-									dmonte.setTact(tac, enemy);
+									dmonte.setTact(tac, enemy,ct);
 									dmonte.setHand(hdata);
 									card = dmonte.cal();
 									
@@ -212,8 +228,18 @@ public class Monte2
 								while(true)
 								{
 									/*‚±‚±‚ğƒ‚ƒ“ƒeƒJƒ‹ƒ‚Å*/
+									int temp = discard.getNum();
+									for(int i = 0;i < playerNum ;i++)
+									{
+										temp += hdata[i];
+									}
+									if(temp > 108)
+									{
+										temp = temp - 108;
+										discard.fix(temp);
+									}
 									Montecorlo2 monte2 = new Montecorlo2(discard, hand, playerNum, pnum, base,hpre);
-									monte2.setTact(tac, enemy);
+									monte2.setTact(tac, enemy,ct);
 									monte2.setHand(hdata);
 									card = monte2.cal();
 									if(true)
@@ -309,6 +335,7 @@ public class Monte2
 					score[2] = Integer.parseInt(server.sread());
 					score[3] = Integer.parseInt(server.sread());
 					
+					//‡ˆÊ‚ğì‚Á‚Ä‚é‚æ
 					for(int i = 0;i < playerNum ; i++)
 		    		{
 		    			int count = 0;
@@ -321,15 +348,6 @@ public class Monte2
 		    			}
 		    			rank[count] = i;
 		    		}
-					
-					if(rank[0] == 0)
-					{
-						enemy = rank[1];
-					}
-					else
-					{
-						enemy = rank[0];
-					}
 					
 					roundcount++;
 					if(roundcount == roundNum)

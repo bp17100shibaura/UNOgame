@@ -4,7 +4,7 @@ import UNOset.server.RoundData;
 public class Evaluation 
 {
 	private int player; //1 2 3 4
-	private int enemy; // 0 1 2 3
+	private int enemy; //1 2 3 4
 	
 	public Evaluation(int player)
 	{
@@ -28,7 +28,13 @@ public class Evaluation
 				ans = rank(a,b);
 				break;
 			case 3:
-				ans = differX(a,b);
+				ans = downX(a,b);
+				break;
+			case 4:
+				ans = upX(a,b);
+				break;
+			case 5:
+				ans = pointDiffX(a,b);
 				break;
 		}
 		
@@ -53,19 +59,8 @@ public class Evaluation
 	//2:自分の順位で決める
 	private boolean rank(RoundData a, RoundData b) //Bが良かったらtrue
 	{
-		int rankA = 0;
-		int rankB = 0;
-		for(int i = 0; i < 4; i++)
-		{
-			if(a.score[player-1] < a.score[i])
-			{
-				rankA++;
-			}
-			if(b.score[player-1] < b.score[i])
-			{
-				rankB++;
-			}
-		}
+		int rankA = a.winner;
+		int rankB = b.winner;
 		
 		if(rankB < rankA)
 		{
@@ -77,15 +72,13 @@ public class Evaluation
 		}
 	}
 	
-	//プレイヤーXの点数で決める
-	
-	//3:プレイヤーXとの点数差で決める
-	private boolean differX(RoundData a, RoundData b)
+	//3:プレイヤーXの点を下げる
+	private boolean downX(RoundData a, RoundData b)
 	{
-		int diffA = a.score[player-1] - a.score[enemy];
-		int diffB = a.score[player-1] - a.score[enemy];
+		int pointA = a.score[enemy-1];
+		int pointB = b.score[enemy-1];
 		
-		if(diffA < diffB)
+		if(pointB < pointA)
 		{
 			return true;
 		}
@@ -93,6 +86,38 @@ public class Evaluation
 		{
 			return false;
 		}
-		
 	}
+	
+	//4:プレイヤーXの点を上げる
+	private boolean upX(RoundData a, RoundData b)
+	{
+		int pointA = a.score[enemy-1];
+		int pointB = b.score[enemy-1];
+		
+		if(pointB > pointA)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	//5：自分　-　プレイヤーX　の点を最大にする
+	private boolean pointDiffX(RoundData a, RoundData b)
+	{
+		int difPointA = a.score[player - 1] - a.score[enemy-1];
+		int difPointB = a.score[player -1] - b.score[enemy-1];
+		
+		if(difPointB > difPointA)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 }

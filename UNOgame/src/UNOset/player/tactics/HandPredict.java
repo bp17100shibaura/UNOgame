@@ -1,6 +1,7 @@
 package UNOset.player.tactics;
 
 import UNOset.utils.*;
+import java.util.Random;
 
 public class HandPredict 
 {
@@ -10,9 +11,14 @@ public class HandPredict
 	
 	int count[] = new int[5];
 	
-	public HandPredict(int turn)
+	int line = 1;
+	
+	Random rand = new Random();
+	
+	public HandPredict(int turn,int line)
 	{
 		this.turn = turn;
+		this.line = line;
 		this.val[0] = 1;
 		this.val[1] = 1;
 		this.val[2] = 1;
@@ -31,22 +37,44 @@ public class HandPredict
 		if(s.equals("r"))
 		{
 			this.val[0] = 0;
+			for(int i = 0; i < 5;i++)
+			{
+				this.count[i]++;
+			}
 			this.count[0] = 0;
 		}else if(s.equals("b"))
 		{
 			this.val[1] = 0;
-			this.count[0] = 0;
+			for(int i = 0; i < 5;i++)
+			{
+				this.count[i]++;
+			}
+			this.count[1] = 0;
 		}else if(s.equals("g"))
 		{
 			this.val[2] = 0;
-			this.count[0] = 0;
+			for(int i = 0; i < 5;i++)
+			{
+				this.count[i]++;
+			}
+			this.count[2] = 0;
 		}else if(s.equals("y"))
 		{
 			this.val[3] = 0;
-			this.count[0] = 0;
+			for(int i = 0; i < 5;i++)
+			{
+				this.count[i]++;
+			}
+			this.count[3] = 0;
+		}else
+		{
+			this.val[4] = 0;
+			for(int i = 0; i < 5;i++)
+			{
+				this.count[i]++;
+			}
+			this.count[4] = 0;
 		}
-		this.val[4] = 0;
-		this.count[4] = 0;
 		
 		this.valChange();
 	}
@@ -65,10 +93,13 @@ public class HandPredict
 	{
 		for(int i = 0;i < 5;i++)
 		{
-			if(this.count[i] > 0)
+			if(this.count[i] >= line)
 			{
 				this.count[i] = 0;
 				this.val[i] = 1;
+			}else if(this.count[i] != 0)
+			{
+				this.val[i] = this.count[i] / line;
 			}
 		}
 	}
@@ -76,10 +107,13 @@ public class HandPredict
 	/*—\‘ª‚Ì•”•ª@”’l‚Í‰¼*/
 	public boolean cardCheck(Card card)
 	{
+		this.valChange();
 		String col = card.getCardColor();
+		float t = (rand.nextInt(100) + 1) / 100;
+		
 		if(col.equals("r"))
 		{
-			if(val[0] == 1)
+			if(val[0] >= t)
 			{
 				return true;
 			}
@@ -89,7 +123,7 @@ public class HandPredict
 			}
 		}else if(col.equals("b"))
 		{
-			if(val[1] == 1)
+			if(val[1] >= t)
 			{
 				return true;
 			}
@@ -99,7 +133,7 @@ public class HandPredict
 			}
 		}else if(col.equals("g"))
 		{
-			if(val[2] == 1)
+			if(val[2] >= t)
 			{
 				return true;
 			}
@@ -109,7 +143,7 @@ public class HandPredict
 			}
 		}else if(col.equals("y"))
 		{
-			if(val[3] == 1)
+			if(val[3] >= t)
 			{
 				return true;
 			}
@@ -119,7 +153,7 @@ public class HandPredict
 			}
 		}else
 		{
-			if(val[4] == 1)
+			if(val[4] >= t)
 			{
 				return true;
 			}

@@ -16,14 +16,9 @@ public class HeuristicEarly {
 
 	public static void main(String[] args) {
 		
-		int num = 3000;
-		try
-		{
-			num = Integer.parseInt(args[0]);
-		}catch(NumberFormatException e)
-		{
-			num = 3000;
-		}
+		int	num = Integer.parseInt(args[0]);
+		int gn = Integer.parseInt(args[1]);
+		//int gn = 10;
 		
 	    GamePlayer player = new GamePlayer();
 	    if(0 == player.playerSet(num))
@@ -36,20 +31,20 @@ public class HeuristicEarly {
 		PrintWriter write = player.getWriter();
 		Reader server = new Reader(write,read);
 		
-		int gamenum = 1000; //試合回数
+		int gamenum = gn;
 
 		try 
 		{
 			while(gamenum > 0)
 			{
-				System.out.println("DUEL " + (1001 - gamenum));
+				System.out.println("DUEL " + ((gn+1) - gamenum));
 				int roundNum = 5; //ラウンド数
 				int playerNum = 4; //プレイヤー数
 				int roundcount = 0;
 				//int pnum = 0;
 				CardList list = new CardList();
 				Card card;
-				Random random = new Random(257);
+				Random random = new Random();
 				String[] co = new String[4];
 				co[0] = "r";
 				co[1] = "g";
@@ -85,7 +80,7 @@ public class HeuristicEarly {
 					str = server.read();
 					card = list.makeCard(str);
 					discard.discard(card);
-					/*ラウンド*/
+					/*ラウンド開始*/
 					while(true)
 					{
 						str = server.sread();
@@ -113,7 +108,7 @@ public class HeuristicEarly {
 								}
 								else //引くか選ぶ
 								{
-									int r = 0; //確定で変えすよ
+									int r = 0; //基本重ねる
 									
 									if(r == 0) //ドロー系を重ねる
 									{
@@ -140,7 +135,7 @@ public class HeuristicEarly {
 												int p = 0;
 												for(int i = 0;i <= 3;i++)
 												{
-													//ワイルドの色
+													//色を決定
 													int temp = hand.colors(co[i]);
 													if(s < temp)
 													{
@@ -287,7 +282,7 @@ public class HeuristicEarly {
 								break;
 							}
 						}
-						else //相手のターン
+						else //相手ターン
 						{
 							str = server.sread();
 							if(str.matches(".*stack draw.*"))
@@ -330,7 +325,7 @@ public class HeuristicEarly {
 						break;
 					}
 				}
-				/*試合の処理*/
+				/*対戦結果*/
 				server.read();
 				server.read();
 			

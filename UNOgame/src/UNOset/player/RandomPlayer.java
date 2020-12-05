@@ -12,7 +12,9 @@ public class RandomPlayer {
 	public static void main(String[] args)
 	{
 		int num = Integer.parseInt(args[0]);
-		//int num = 2000;
+		int gn = Integer.parseInt(args[1]);
+		//int gn = 10;
+		
 	    GamePlayer player = new GamePlayer();
 	    if(0 == player.playerSet(num))
 	    {
@@ -24,13 +26,13 @@ public class RandomPlayer {
 		PrintWriter write = player.getWriter();
 		Reader server = new Reader(write,read);
 		
-		int gameNum = 1000;
+		int gameNum = gn;
 		
 		try
 		{
 			while(gameNum > 0)
 			{
-				System.out.println("DUEL "+ (1001 - gameNum));
+				System.out.println("DUEL "+ ((gn+1) - gameNum));
 				int roundNum = 5;
 				int playerNum = 4;
 				//int pnum = 0;
@@ -39,7 +41,7 @@ public class RandomPlayer {
 				Card card;
 				String[] co = new String[4];
 				co[0] = "r";
-				Random random = new Random(257);
+				Random random = new Random();
 				co[1] = "g";
 				co[2] = "b";
 				co[3] = "y";
