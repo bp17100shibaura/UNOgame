@@ -385,6 +385,7 @@ public class GameRun
 	{
 		int[] score = new int[playerNum];
 		int temp = 0;
+		int winner = 1;
 		
 		for(int i = 0;i < playerNum;i++)
 		{
@@ -396,11 +397,19 @@ public class GameRun
 			if(score[i] == 0)
 			{
 				score[i] = temp;
-				result.winner = i+1;
+				//result.winner = i+1;
+			}
+		}
+		//テスト用
+		for(int i = 0;i < playerNum;i++)
+		{
+			if(score[0] < score[i])
+			{
+				winner++;
 			}
 		}
 		result.score = score;
-		
+		result.winner = winner;
 		return result;
 	}
 }

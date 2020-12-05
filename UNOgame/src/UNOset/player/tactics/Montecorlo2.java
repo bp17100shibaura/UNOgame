@@ -17,6 +17,7 @@ public class Montecorlo2
 	HandPredict[] hpre;
 	Evaluation evaluation;
 	int tact = 1; //1:点数 2:順位 3:自分以外の一位との差
+	int ct = 3000;
 	
 	public Montecorlo2(DisCard dis, Hand myhand,int plyerNum, int num, int turnbase,HandPredict[] hpre)
 	{
@@ -58,19 +59,16 @@ public class Montecorlo2
 		return ans;
 	}
 	
-	public void setTact(int tact,int enemy)
+	public void setTact(int tact,int enemy,int count)
 	{
+		this.ct = count;
 		this.tact = tact;
-		if(this.tact == 3 && enemy == -1)
-		{
-			this.tact = 1;
-		}
 		evaluation.setEnemy(enemy);
 	}
 
 	public Card cal() //可能手を作成　run()でシュミ
 	{
-		int count = 3000;
+		int count = this.ct;
 		String[] co = {"b","g","y","r"};
 		Card bestcard  = null;
 		RoundData best = new RoundData();
@@ -106,6 +104,7 @@ public class Montecorlo2
 							tdata.score[1] += temp.score[1];
 							tdata.score[2] += temp.score[2];
 							tdata.score[3] += temp.score[3];
+							tdata.winner += temp.winner;
 						}
 						if(eval(best,tdata) || bestcard == null)
 						{
@@ -126,6 +125,7 @@ public class Montecorlo2
 						tdata.score[1] += temp.score[1];
 						tdata.score[2] += temp.score[2];
 						tdata.score[3] += temp.score[3];
+						tdata.winner += temp.winner;
 					}
 					if(eval(best,tdata) || bestcard == null)
 					{
@@ -177,7 +177,7 @@ public class Montecorlo2
 		return false;
 	}
 	
-	public RoundData run(Card start)//ランダムシュミレーション サーバーのコピーかな 300回で
+	public RoundData run(Card start)//ランダムシュミレーション サーバーのコピーかな 3000回で
 	{
 		int limit = 0;
 		String[] co = {"b","g","y","r"};
@@ -197,7 +197,19 @@ public class Montecorlo2
 				//System.out.println(i);
 				for(int j = 0;j < this.handNum[i];j++)
 				{
+					int lt = 0;
 					Card temp = tdeck.draw1Card();
+					while(!hpre[i].cardCheck(temp))
+					{
+						tdeck.backCard(temp);
+						temp = tdeck.draw1Card();
+						lt++;
+						if(lt > 10000)
+						{
+							//System.out.print("er!");
+							break;
+						}
+					}
 					if(temp instanceof WildCard)
 					{
 						((WildCard) temp).changeColor("w");
@@ -423,7 +435,7 @@ public class Montecorlo2
 	{
 		int[] score = new int[playerNum];
 		int temp = 0;
-		int winner = 0;
+		int winner = 1;
 		
 		for(int i = 0;i < playerNum;i++)
 		{
@@ -438,6 +450,15 @@ public class Montecorlo2
 				winner = i+1;
 			}
 		}
+		
+		for(int i = 0;i < playerNum;i++)
+		{
+			if(score[num-1] < score[i])
+			{
+				winner++;
+			}
+		}
+		
 		RoundData result = new RoundData();
 		result.score = score;
 		result.winner = winner;

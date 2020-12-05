@@ -12,7 +12,9 @@ public class RandomPlayer {
 	public static void main(String[] args)
 	{
 		int num = Integer.parseInt(args[0]);
-		//int num = 2000;
+		int gn = Integer.parseInt(args[1]);
+		//int gn = 10;
+		
 	    GamePlayer player = new GamePlayer();
 	    if(0 == player.playerSet(num))
 	    {
@@ -24,13 +26,13 @@ public class RandomPlayer {
 		PrintWriter write = player.getWriter();
 		Reader server = new Reader(write,read);
 		
-		int gameNum = 50;
+		int gameNum = gn;
 		
 		try
 		{
 			while(gameNum > 0)
 			{
-				System.out.println("DUEL "+ (51 - gameNum));
+				System.out.println("DUEL "+ ((gn+1) - gameNum));
 				int roundNum = 5;
 				int playerNum = 4;
 				//int pnum = 0;

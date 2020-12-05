@@ -98,6 +98,14 @@ public class DisCard
 	   return cards.size();   
    }
    
+   public void fix(int num)
+   {
+	   for(int i = 0;i < num -1;i++)
+	   {
+		   cards.remove(i);
+	   }
+   }
+   
    public void cardFix()
    {
 	   int n = this.cards.size();

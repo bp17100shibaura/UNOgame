@@ -8,15 +8,13 @@ public class UNOserver
 	public static void main(String[] args)
 	{
 		int playerNum = 4;
+		int gn = Integer.parseInt(args[1]);
+		int outType = Integer.parseInt(args[0]);
 		
-		//ポートの設定
-		//int a = Integer.parseInt(args[0]);
-		//int b = Integer.parseInt(args[1]);
-		
-		int a = 2500;
-		int b = 3000;
-		int c = 3500;
-		int d = 4000;
+		int a = 5010;
+		int b = 5020;
+		int c = 5030;
+		int d = 5040;
 		
 		//TCPserverとの接続
 	    TCPserver server = new TCPserver(playerNum);
@@ -31,13 +29,17 @@ public class UNOserver
 	    	return;
 	    }
 	    
-	    int gameNum = 50;
+	    int gameNum = gn;
 	    try 
 	    {	
-	    	//FileWriter fw = new FileWriter("C:\\Users\\ken\\Desktop\\test.csv", true);
-	    	FileWriter fw = new FileWriter("/home/tslab/bp17100/Exper/src/test.csv", true);
+	    	//FileWriter fw = new FileWriter("C:\\Users\\ken\\Desktop\\round.csv", true);
+	    	//FileWriter fw2 = new FileWriter("C:\\Users\\ken\\Desktop\\single.csv", true);
+	    	FileWriter fw = new FileWriter("/home/tslab/bp17100/Exper/src/round.csv", true);
 	    	PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
-    	
+	    	
+	    	FileWriter fw2 = new FileWriter("/home/tslab/bp17100/Exper/src/single.csv", true);
+	    	PrintWriter pw2 = new PrintWriter(new BufferedWriter(fw2));
+	    	
 	    	while(gameNum > 0)
 	    	{
 	    		//試合数
@@ -76,6 +78,8 @@ public class UNOserver
 	    			server.sendAllMessage(Integer.toString(totalScore[2]));
 	    			server.sendAllMessage(Integer.toString(totalScore[3]));
 	    			
+	    			System.out.println(data.winner);
+	    			
 	    			roundCount++;
 	    			if(roundCount == roundNum)
 	    			{
@@ -87,41 +91,45 @@ public class UNOserver
 	    		server.sendAllMessage("final score");
 	    		int topS = -1000;
 	    		int topP = 0;
-
-	    		//pw.print(",");
-	    		/*pw.print("R1");
-	    		pw.print(",");
-	    		pw.print("R2");
-	    		pw.print(",");
-	    		pw.print("R3");
-	    		pw.print(",");
-	    		pw.print("R4");
-	    		pw.print(",");
-	    		pw.print("R5");
-	    		pw.print(",");
-	    		pw.print("LAST");
-	    		pw.println();
-	    		for(int i= 0;i < playerNum;i++)
+	    		
+	    		int tRank[] = new int[4];
+	    		for(int i = 0; i < roundNum;i++)
 	    		{
-	    			pw.print("P"+ (i+1));
-	    			pw.print(",");
-	    			int temp = 0;
-	    			for(int j = 0;j < roundNum;j++)
+	    			for(int k = 0;k < playerNum;k++)
 	    			{
-	    				pw.print(scoreData[i][j]);
-	    				pw.print(",");
-	    				temp += scoreData[i][j];
+	    				int ct = 0;
+	    				int tp = scoreData[k][i];
+	    				for(int j = 0;j < playerNum;j++)
+	    				{
+	    					if(tp < scoreData[j][i])
+	    					{
+	    						ct++;
+	    					}
+	    				}
+	    				tRank[k] = ct + 1; 
 	    			}
-	    			server.sendAllMessage("player"+ (i+1) +"'s score");
-	    			server.sendAllMessage(Integer.toString(temp));
-	    			pw.print(temp);
-	    			pw.println();
-	    			if(temp > topS)
+	    			
+	    			if(outType == 2)
 	    			{
-	    				topS = temp;
-	    				topP = i + 1;
+	    				pw2.print(scoreData[0][i]);
+	    				pw2.print(",");
+	    				pw2.print(scoreData[1][i]);
+	    				pw2.print(",");
+	    				pw2.print(scoreData[2][i]);
+	    				pw2.print(",");
+	    				pw2.print(scoreData[3][i]);
+	    				pw2.print(",");
+	    				pw2.print(tRank[0]);
+	    				pw2.print(",");
+	    				pw2.print(tRank[1]);
+	    				pw2.print(",");
+	    				pw2.print(tRank[2]);
+	    				pw2.print(",");
+	    				pw2.print(tRank[3]);
+	    				pw2.print(",");
+	    				pw2.println();
 	    			}
-	    		}*/
+	    		}
 	    		
 	    		int temp[] = new int[4];
 	    		for(int i = 0;i < playerNum;i++)
@@ -141,8 +149,6 @@ public class UNOserver
 	    				topP = i+1;
  	    			}	
 	    		}
-	    		pw.println();
-	    		
 	    		
 	    		//順位の確定
 	    		int rank[] = new int[4];
@@ -161,6 +167,9 @@ public class UNOserver
 	    			pw.print(rank[i]);
 	    			pw.print(",");
 	    		}
+	    		
+	    		pw.println();
+	    		
 
 	    		server.sendAllMessage("winner player"+ topP);
 	    		server.sendAllMessage("winner score "+ topS);
@@ -169,13 +178,15 @@ public class UNOserver
 	    	
 	    		gameNum = gameNum - 1;
 	    		
-	    		System.out.println(" 1:"+temp[0] + " 2:"+ temp[1] + " 3:" + temp[2] + " :4" +temp[3]);
+	    		System.out.println(" 1:"+temp[0] + " 2:"+ temp[1] + " 3:" + temp[2] + " 4:" +temp[3]);
 	    	}
 	    	
     		pw.println();
     		
     		pw.close();
     		fw.close();
+    		pw2.close();
+    		fw2.close();
 	    }catch (IOException ex) 
 	    {
 			ex.printStackTrace();
