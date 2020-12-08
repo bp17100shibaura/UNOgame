@@ -16,8 +16,8 @@ public class Montecorlo2
 	Card topcard;
 	HandPredict[] hpre;
 	Evaluation evaluation;
-	int tact = 1; //1:点数 2:順位 3:自分以外の一位との差
-	int ct = 3000;
+	int tact = 1; //1:点数 2:順位 
+	int ct = 5;
 	
 	public Montecorlo2(DisCard dis, Hand myhand,int plyerNum, int num, int turnbase,HandPredict[] hpre)
 	{
@@ -64,6 +64,8 @@ public class Montecorlo2
 		this.ct = count;
 		this.tact = tact;
 		evaluation.setEnemy(enemy);
+		//System.out.println(this.ct);
+		//System.out.println(this.tact + " == " +enemy);
 	}
 
 	public Card cal() //可能手を作成　run()でシュミ
@@ -73,7 +75,11 @@ public class Montecorlo2
 		Card bestcard  = null;
 		RoundData best = new RoundData();
 		best.score = new int[4];
-		best.score[this.num-1] = -9999;
+		for(int i = 0;i < 4;i++)
+		{
+			best.score[i] = -9999;
+		}
+		best.winner = 9999;
 		for(int i = 0;i < myhand.getNum();i++)
 		{
 			Card card = myhand.cardOut(i);
@@ -197,9 +203,9 @@ public class Montecorlo2
 				//System.out.println(i);
 				for(int j = 0;j < this.handNum[i];j++)
 				{
-					int lt = 0;
+					//int lt = 0;
 					Card temp = tdeck.draw1Card();
-					while(!hpre[i].cardCheck(temp))
+					/*while(!hpre[i].cardCheck(temp))
 					{
 						tdeck.backCard(temp);
 						temp = tdeck.draw1Card();
@@ -209,7 +215,7 @@ public class Montecorlo2
 							//System.out.print("er!");
 							break;
 						}
-					}
+					}*/
 					if(temp instanceof WildCard)
 					{
 						((WildCard) temp).changeColor("w");
@@ -276,6 +282,7 @@ public class Montecorlo2
 				result.score[1] = 0;
 				result.score[2] = 0;
 				result.score[3] = 0;
+				result.winner = 4;
 				//System.out.println("limited out!!!");
 				return result;
 			}
@@ -288,7 +295,7 @@ public class Montecorlo2
 				card = list.makeCard(str);
 				if(thand[turn-1].dcanDiscard(card)) //Dカードを持ってるか
 				{
-					int r = rand.nextInt(2);
+					int r = rand.nextInt();
 					if(r == 0) //Dカードを使う
 					{
 						while(true)

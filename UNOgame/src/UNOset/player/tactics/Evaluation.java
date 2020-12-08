@@ -19,6 +19,7 @@ public class Evaluation
 	public boolean eval(int select,RoundData a, RoundData b)
 	{
 		boolean ans = true;
+		//System.out.print(enemy + "  "+ select + "   ");
 		switch(select)
 		{
 			case 1:
@@ -46,12 +47,15 @@ public class Evaluation
 	{
 		int pointA = a.score[player-1];
 		int pointB = b.score[player-1];
+		//System.out.print(pointA + " " + pointB);
 		if(pointA < pointB)
 		{
+			//System.out.println(" > t");
 			return true;
 		}
 		else
 		{
+			//System.out.println(" > f");
 			return false;
 		}
 	}
@@ -61,13 +65,22 @@ public class Evaluation
 	{
 		int rankA = a.winner;
 		int rankB = b.winner;
+		//System.out.print(rankA + " " + rankB);
+		
+		if(rankA == 0)
+		{
+			//System.out.println(" > st");
+			return true;
+		}
 		
 		if(rankB < rankA)
 		{
+			//System.out.println(" > t");
 			return true;
 		}
 		else
 		{
+			//System.out.println(" > f");
 			return false;
 		}
 	}
@@ -77,13 +90,20 @@ public class Evaluation
 	{
 		int pointA = a.score[enemy-1];
 		int pointB = b.score[enemy-1];
-		
+		//System.out.print(pointA + " " + pointB);
+		if(pointA == -9999)
+		{
+			//System.out.println(" > st");
+			return true;
+		}
 		if(pointB < pointA)
 		{
+			//System.out.println(" > t");
 			return true;
 		}
 		else
 		{
+			//System.out.println(" > f");
 			return false;
 		}
 	}
@@ -93,13 +113,15 @@ public class Evaluation
 	{
 		int pointA = a.score[enemy-1];
 		int pointB = b.score[enemy-1];
-		
+		//System.out.print(pointA + " " + pointB);
 		if(pointB > pointA)
 		{
+			//System.out.println(" > t");
 			return true;
 		}
 		else
 		{
+			//System.out.println(" > f");
 			return false;
 		}
 	}

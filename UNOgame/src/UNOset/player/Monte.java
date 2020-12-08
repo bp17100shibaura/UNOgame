@@ -16,7 +16,7 @@ public class Monte
 		int tac = Integer.parseInt(args[0]);
 		int enemy = Integer.parseInt(args[1]);
 		int ct = 2500;
-		int num = 5010;
+		int num = 4001;
 		int line = 0;
 		
 	    GamePlayer player = new GamePlayer();
@@ -179,7 +179,7 @@ public class Monte
 									}
 									else //ƒhƒ[Œn‚ğd‚Ë‚È‚¢
 									{
-										System.out.println("starrrrrrrrrrrr");
+										System.out.println("D‰B‚µ");
 										server.write("n");
 										server.sread();
 										str = server.sread();

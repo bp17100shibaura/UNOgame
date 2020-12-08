@@ -17,7 +17,7 @@ public class DMontecorlo {
 	HandPredict[] hpre;
 	Evaluation evaluation;
 	int tact = 1; //1:点数 2:順位 3:自分以外の一位との差
-	int ct = 3000;
+	int ct = 5;
 	
 	public DMontecorlo(DisCard dis, Hand myhand,int plyerNum, int num, int turnbase, int dCount, HandPredict[] hpre)
 	{
@@ -65,6 +65,8 @@ public class DMontecorlo {
 		this.ct = count;
 		this.tact = tact;
 		evaluation.setEnemy(enemy);
+		//System.out.println(this.ct);
+		//System.out.println(this.tact + " !! " +enemy);
 	}
 
 	public Card cal() //可能手を作成　run()でシュミ
@@ -74,7 +76,11 @@ public class DMontecorlo {
 		Card bestcard  = null;
 		RoundData best = new RoundData();
 		best.score = new int[4];
-		best.score[this.num-1] = -9999;
+		for(int i = 0;i < 4;i++)
+		{
+			best.score[i] = -9999;
+		}
+		best.winner = 9999;
 		RoundData temp;
 		for(int i = 0;i < this.myhand.getNum();i++)
 		{
@@ -185,9 +191,9 @@ public class DMontecorlo {
 				//System.out.println(i);
 				for(int j = 0;j < this.handNum[i];j++)
 				{
-					int lt = 0;
+					//int lt = 0;
 					Card temp = tdeck.draw1Card();
-					lt = 0;
+					/*lt = 0;
 					while(!hpre[i].cardCheck(temp))
 					{
 						tdeck.backCard(temp);
@@ -198,7 +204,7 @@ public class DMontecorlo {
 							//System.out.print("er?");
 							break;
 						}
-					}
+					}*/
 					
 					if(temp instanceof WildCard)
 					{
@@ -279,6 +285,7 @@ public class DMontecorlo {
 				result.score[1] = 0;
 				result.score[2] = 0;
 				result.score[3] = 0;
+				result.winner = 4;
 				//System.out.println("limited out!!!");
 				return result;
 			}
@@ -291,7 +298,7 @@ public class DMontecorlo {
 				card = list.makeCard(str);
 				if(thand[turn-1].dcanDiscard(card)) //Dカードを持ってるか
 				{
-					int r = rand.nextInt(2);
+					int r = rand.nextInt();
 					if(r == 0) //Dカードを使う
 					{
 						while(true)
