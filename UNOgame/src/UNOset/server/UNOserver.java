@@ -11,10 +11,10 @@ public class UNOserver
 		int gn = Integer.parseInt(args[1]);
 		int outType = Integer.parseInt(args[0]);
 		
-		int a = 5010;
-		int b = 5020;
-		int c = 5030;
-		int d = 5040;
+		int a = 4001;
+		int b = 4002;
+		int c = 4003;
+		int d = 4004;
 		
 		//TCPserver‚Æ‚ÌÚ‘±
 	    TCPserver server = new TCPserver(playerNum);
@@ -77,8 +77,6 @@ public class UNOserver
 	    			server.sendAllMessage(Integer.toString(totalScore[1]));
 	    			server.sendAllMessage(Integer.toString(totalScore[2]));
 	    			server.sendAllMessage(Integer.toString(totalScore[3]));
-	    			
-	    			System.out.println(data.winner);
 	    			
 	    			roundCount++;
 	    			if(roundCount == roundNum)
