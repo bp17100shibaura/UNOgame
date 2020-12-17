@@ -111,6 +111,7 @@ public class Montecorlo2
 							tdata.score[2] += temp.score[2];
 							tdata.score[3] += temp.score[3];
 							tdata.winner += temp.winner;
+							tdata.win += temp.win;
 						}
 						if(eval(best,tdata) || bestcard == null)
 						{
@@ -132,6 +133,7 @@ public class Montecorlo2
 						tdata.score[2] += temp.score[2];
 						tdata.score[3] += temp.score[3];
 						tdata.winner += temp.winner;
+						tdata.win += temp.win;
 					}
 					if(eval(best,tdata) || bestcard == null)
 					{
@@ -469,7 +471,10 @@ public class Montecorlo2
 		RoundData result = new RoundData();
 		result.score = score;
 		result.winner = winner;
-		
+		if(winner == 1)
+		{
+			result.win = 1;
+		}
 		return result;
 	}
 	

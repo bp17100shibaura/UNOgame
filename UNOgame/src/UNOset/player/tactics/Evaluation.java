@@ -37,6 +37,8 @@ public class Evaluation
 			case 5:
 				ans = pointDiffX(a,b);
 				break;
+			case 6:
+				ans = winNum(a,b);
 		}
 		
 		return ans;
@@ -133,6 +135,22 @@ public class Evaluation
 		int difPointB = a.score[player -1] - b.score[enemy-1];
 		
 		if(difPointB > difPointA)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	//6:©•ª‚Ìã‚ª‚Á‚½‰ñ”‚Å•]‰¿
+	private boolean winNum(RoundData a, RoundData b)
+	{
+		int winA = a.win;
+		int winB = b.win;
+		
+		if(winB > winA)
 		{
 			return true;
 		}
