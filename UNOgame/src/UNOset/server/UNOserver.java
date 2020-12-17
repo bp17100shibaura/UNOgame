@@ -8,13 +8,18 @@ public class UNOserver
 	public static void main(String[] args)
 	{
 		int playerNum = 4;
-		int gn = Integer.parseInt(args[1]);
+		int gn = Integer.parseInt(args[2]);
 		int outType = Integer.parseInt(args[0]);
+		int fileNum = Integer.parseInt(args[1]);
 		
 		int a = 4001;
 		int b = 4002;
 		int c = 4003;
 		int d = 4004;
+		
+		int singlePointData[] = new int[4];
+		int singleRankData[] = new int[4];
+		int singleWinData[] = new int[4];
 		
 		//TCPserver‚Æ‚ÌÚ‘±
 	    TCPserver server = new TCPserver(playerNum);
@@ -29,15 +34,32 @@ public class UNOserver
 	    	return;
 	    }
 	    
+	    String file = "/home/tslab/bp17100/Exper";
+	    if(fileNum == 1)
+	    {
+	    	file += "/src/";
+	    }else if(fileNum == 2)
+	    {
+	    	file += "2/src/";
+	    }
+	    else if(fileNum == 3)
+	    {
+	    	file += "3/src/";
+	    }
+	    else if(fileNum == 4)
+	    {
+	    	file += "4/src/";
+	    }
+	    
 	    int gameNum = gn;
 	    try 
 	    {	
 	    	//FileWriter fw = new FileWriter("C:\\Users\\ken\\Desktop\\round.csv", true);
 	    	//FileWriter fw2 = new FileWriter("C:\\Users\\ken\\Desktop\\single.csv", true);
-	    	FileWriter fw = new FileWriter("/home/tslab/bp17100/Exper/src/round.csv", true);
+	    	FileWriter fw = new FileWriter(file + "round.csv", true);
 	    	PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 	    	
-	    	FileWriter fw2 = new FileWriter("/home/tslab/bp17100/Exper/src/single.csv", true);
+	    	FileWriter fw2 = new FileWriter(file + "single.csv", true);
 	    	PrintWriter pw2 = new PrintWriter(new BufferedWriter(fw2));
 	    	
 	    	while(gameNum > 0)
@@ -107,27 +129,17 @@ public class UNOserver
 	    				tRank[k] = ct + 1; 
 	    			}
 	    			
-	    			if(outType == 2)
-	    			{
-	    				pw2.print(scoreData[0][i]);
-	    				pw2.print(",");
-	    				pw2.print(scoreData[1][i]);
-	    				pw2.print(",");
-	    				pw2.print(scoreData[2][i]);
-	    				pw2.print(",");
-	    				pw2.print(scoreData[3][i]);
-	    				pw2.print(",");
-	    				pw2.print(tRank[0]);
-	    				pw2.print(",");
-	    				pw2.print(tRank[1]);
-	    				pw2.print(",");
-	    				pw2.print(tRank[2]);
-	    				pw2.print(",");
-	    				pw2.print(tRank[3]);
-	    				pw2.print(",");
-	    				pw2.println();
-	    			}
+	    			for(int l = 0;l < playerNum;l++)
+		    		{
+		    			singlePointData[l] += scoreData[l][i];
+		    			singleRankData[l] += tRank[l];
+		    			if(tRank[l] == 1)
+		    			{
+		    				singleWinData[l] ++;
+		    			}
+		    		}
 	    		}
+	    		
 	    		
 	    		int temp[] = new int[4];
 	    		for(int i = 0;i < playerNum;i++)
@@ -176,13 +188,33 @@ public class UNOserver
 	    	
 	    		gameNum = gameNum - 1;
 	    		
-	    		System.out.println(" 1:"+temp[0] + " 2:"+ temp[1] + " 3:" + temp[2] + " 4:" +temp[3]);
+	    		//System.out.println(" 1:"+temp[0] + " 2:"+ temp[1] + " 3:" + temp[2] + " 4:" +temp[3]);
 	    	}
 	    	
     		pw.println();
-    		
     		pw.close();
     		fw.close();
+    		if(outType == 2)
+    		{
+    			for(int i = 0;i < playerNum;i++)
+    			{
+    				pw2.print(singlePointData[i]);
+    				pw2.print(",");
+    			}
+    			pw2.println();
+    			for(int i = 0;i < playerNum;i++)
+    			{
+    				pw2.print(singleRankData[i]);
+    				pw2.print(",");
+    			}
+    			pw2.println();
+    			for(int i = 0;i < playerNum;i++)
+    			{
+    				pw2.print(singleWinData[i]);
+    				pw2.print(",");
+    			}
+    			pw2.println();
+    		}
     		pw2.close();
     		fw2.close();
 	    }catch (IOException ex) 
